@@ -1,0 +1,9 @@
+/devenv/
+*.py[oc]
+/.coverage
+/.tox/
+/challenge.egg-info/
+/challenge/challenge.db
+/challenge/challenge.cfg
+/.htmlcov
+/static/
