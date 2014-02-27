@@ -2,4 +2,5 @@ language: python
 python: "3.3"
 install:
     - pip install tox
+    - cp challenge/challenge.cfg.example challenge/challenge.cfg
 script: tox
