@@ -6,9 +6,9 @@ __all__ = ['winner']
 def error_to_win(r):
     """Change one's error to other's win"""
 
-    if r == 'error_1':
+    if r == 'error1':
         return 'e2'
-    elif r == 'error_2':
+    elif r == 'error2':
         return 'e1'
     else:
         return r
@@ -23,21 +23,21 @@ def winner(r1, r2):
     'draw'
     >>> winner('e2', 'e1')
     'draw'
-    >>> winner('e1', 'error_1')
+    >>> winner('e1', 'error1')
     'draw'
-    >>> winner('e1', 'error_2')
+    >>> winner('e1', 'error2')
     'e1'
-    >>> winner('error_1', 'error_2')
+    >>> winner('error1', 'error2')
     'draw'
-    >>> winner('error_2', 'error_1')
+    >>> winner('error2', 'error1')
     'draw'
-    >>> winner('error_1', 'error_1')
+    >>> winner('error1', 'error1')
     'e2'
     >>> winner('draw', 'draw')
     'draw'
     >>> winner('draw', 'e1')
     'e1'
-    >>> winner('draw', 'error_1')
+    >>> winner('draw', 'error1')
     'e2'
     """
     r1 = error_to_win(r1)
