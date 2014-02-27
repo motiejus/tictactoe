@@ -10,9 +10,6 @@ TEMPLATE_DEBUG = DEBUG
 
 SECRET_KEY = config.get('challenge', 'secret_key', fallback='supersecret')
 
-if not DEBUG:
-    assert SECRET_KEY != 'supersecret'
-
 ALLOWED_HOSTS = ['localhost']
 
 DEV_APPS = (
