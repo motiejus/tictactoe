@@ -1,1 +1,2 @@
 msgpack-python==0.4.1
+http://www.djangoproject.com/m/releases/1.7/Django-1.7a2.tar.gz#egg=django
