@@ -1,0 +1,8 @@
+{% extends "main.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Entry " %} {{ entry.id }}{% endblock %}
+
+{% block content %}
+  {{ entry }}
+{% endblock %}

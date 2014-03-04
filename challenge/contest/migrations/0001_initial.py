@@ -1,5 +1,6 @@
 # encoding: utf8
 from django.db import models, migrations
+import challenge.tools.validators
 from django.conf import settings
 
 
@@ -15,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
                 ('user', models.ForeignKey(to_field='id', to=settings.AUTH_USER_MODEL)),
-                ('code', models.BinaryField(max_length=60000, editable=False)),
+                ('code', models.TextField(validators=[challenge.tools.validators.ByteLengthValidator(60000)])),
             ],
             options={
             },

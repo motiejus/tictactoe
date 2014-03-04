@@ -1,15 +1,18 @@
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+
+from challenge.tools.validators import ByteLengthValidator
 
 from .logic import winner
 
 
 class Entry(models.Model):
+    _max_len = ByteLengthValidator(settings.MAX_CODE_SIZE)
+
     user = models.ForeignKey(User)
-    code = models.BinaryField(max_length=settings.MAX_CODE_SIZE)
+    code = models.TextField(validators=[_max_len])
     fights = models.ManyToManyField(
         'Entry', symmetrical=False, through='Fight', blank=True)
 
