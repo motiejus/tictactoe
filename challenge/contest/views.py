@@ -1,10 +1,18 @@
 from django.utils.translation import ugettext_lazy as _
 from django.template import RequestContext
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .forms import CodeUploadForm
+from .models import Entry
+
+
+def entry(request, id):
+    entry = get_object_or_404(Entry, id)
+    return render_to_response(
+        'contest/entry.html', {'entry': entry},
+        context_instance=RequestContext(request))
 
 
 @login_required

@@ -13,9 +13,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Entry',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, to_field='id')),
-                ('code', models.TextField(max_length=60000)),
+                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('user', models.ForeignKey(to_field='id', to=settings.AUTH_USER_MODEL)),
+                ('code', models.BinaryField(max_length=60000, editable=False)),
             ],
             options={
             },
@@ -24,9 +24,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Fight',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('e1', models.ForeignKey(to='contest.Entry', to_field='id')),
-                ('e2', models.ForeignKey(to='contest.Entry', to_field='id')),
+                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('e1', models.ForeignKey(to_field='id', to='contest.Entry')),
+                ('e2', models.ForeignKey(to_field='id', to='contest.Entry')),
                 ('round1', models.CharField(max_length=16, choices=[('e1', 'Entry 1 won'), ('e2', 'Entry 2 won'), ('draw', 'Draw'), ('Error', (('error1', 'Error by Entry 1'), ('error2', 'Error by Entry 2')))])),
                 ('round2', models.CharField(max_length=16, choices=[('e1', 'Entry 1 won'), ('e2', 'Entry 2 won'), ('draw', 'Draw'), ('Error', (('error1', 'Error by Entry 1'), ('error2', 'Error by Entry 2')))])),
             ],
@@ -38,9 +38,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LatestEntry',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, to_field='id')),
-                ('entry', models.ForeignKey(to='contest.Entry', to_field='id')),
+                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('user', models.ForeignKey(to_field='id', to=settings.AUTH_USER_MODEL)),
+                ('entry', models.ForeignKey(to_field='id', to='contest.Entry')),
             ],
             options={
             },

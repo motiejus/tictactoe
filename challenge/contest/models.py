@@ -9,15 +9,9 @@ from .logic import winner
 
 class Entry(models.Model):
     user = models.ForeignKey(User)
-    code = models.TextField(max_length=settings.MAX_CODE_SIZE)
+    code = models.BinaryField(max_length=settings.MAX_CODE_SIZE)
     fights = models.ManyToManyField(
         'Entry', symmetrical=False, through='Fight', blank=True)
-
-    def clean(self):
-        sz, _max = len(self.code.encode('utf8')), settings.MAX_CODE_SIZE
-        if sz > _max:
-            err = "Code is %d bytes long, must be <= %d" % (sz, _max)
-            raise ValidationError(err)
 
 
 class LatestEntry(models.Model):
