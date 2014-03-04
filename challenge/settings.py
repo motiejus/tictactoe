@@ -89,6 +89,7 @@ STATICFILES_STORAGE = ('django.contrib.staticfiles.'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGIN_URL = reverse_lazy('login')
+LOGIN_REDIRECT_URL = '/'
 
 LOGGING = {
     'version': 1,
