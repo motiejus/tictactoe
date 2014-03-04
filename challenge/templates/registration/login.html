@@ -4,6 +4,10 @@
 {% block title %}{% trans "Login" %}{% endblock %}
 
 {% block content %}
-    <h3>{% trans "Login" %}</h3>
-    {{ form }}
+  <h3>{% trans "Login" %}</h3>
+  <form method="POST" action="{{ request.get_full_path }}">
+    {% csrf_token %}
+    <ul>{{ form.as_ul }}</ul>
+    <input type="submit" value="{% trans "Submit" %}" />
+  </form>
 {% endblock %}
