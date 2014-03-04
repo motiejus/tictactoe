@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -15,6 +16,9 @@ class Entry(models.Model):
     code = models.TextField(validators=[_max_len])
     fights = models.ManyToManyField(
         'Entry', symmetrical=False, through='Fight', blank=True)
+
+    def get_absolute_url(self):
+        return reverse_lazy('challenge.contest.views.entry', args=[self.id])
 
 
 class LatestEntry(models.Model):
