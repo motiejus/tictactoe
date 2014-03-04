@@ -109,3 +109,6 @@ LOGGING = {
             }
         }
     }
+
+# Maximum size of Lua code submission
+MAX_CODE_SIZE = 60000
