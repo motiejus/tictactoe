@@ -24,6 +24,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'challenge.tools',
     'challenge.contest',
 ) + (DEBUG and DEV_APPS or ())
 
@@ -46,6 +47,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
     'challenge.tools.context_processors.debug',
+)
+
+TEMPLATE_DIRS = (
+    os.path.join(APP_DIR, 'templates'),
 )
 
 ROOT_URLCONF = 'challenge.urls'
