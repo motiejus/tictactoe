@@ -8,9 +8,9 @@ config = configparser.RawConfigParser()
 HERE = os.path.dirname(__file__)
 
 configfiles = [
+    '/etc/challenge.cfg'                          # staging/live
     os.path.join(HERE, 'challenge.default.cfg'),  # default config
     os.path.join(HERE, 'challenge.cfg'),          # per-environment config
-    '/etc/gameplatform.cfg'                       # staging/live
 ]
 
 files_read = config.read(configfiles)
