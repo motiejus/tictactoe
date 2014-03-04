@@ -6,7 +6,18 @@
 
 <div id="top_wrapper">
   <div id="header">
-    Navigation and user info
+     <ul id="navbar">
+       <li><a href="/">{% trans "Home" %}</a></li>
+       <li>
+         <a href="{% url "challenge.contest.views.upload" %}">
+          {% trans "Upload" %}
+        </a>
+        </li>
+       {% if request.user.is_anonymous %}
+         <li><a href="{% url "login" %}">{% trans "Login" %}</a></li>
+       {% else %}
+         <li><a href="{% url "logout" %}">{% trans "Logout" %}</a></li>
+       {% endif %}
   </div>
 
   <div id="content">

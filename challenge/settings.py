@@ -1,5 +1,6 @@
 import os
 from challenge.config import config
+from django.core.urlresolvers import reverse_lazy
 
 APP_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(APP_DIR)
@@ -87,6 +88,7 @@ STATICFILES_STORAGE = ('django.contrib.staticfiles.'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+LOGIN_URL = reverse_lazy('login')
 
 LOGGING = {
     'version': 1,
