@@ -3,11 +3,13 @@ import doctest
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
 from django.conf import settings
 
 from challenge.contest import logic
 
 from .models import Entry
+from . import views
 
 
 class EntryTestCase(TestCase):
@@ -28,14 +30,28 @@ class EntryTestCase(TestCase):
 
 
 class ViewTestCase(TestCase):
+    setUp = lambda self: new_user(self)
+
     def test_index(self):
         request = self.client.get('/')
         self.assertEqual(request.status_code, 200)
+
+    def test_upload_get(self):
+        self.client.login(username='t1', password='t2')
+        response = self.client.get(reverse(views.upload))
+        self.assertEqual(response.status_code, 200)
+
+    def test_upload_post(self):
+        self.assertTrue(self.client.login(username='t1', password='t2'))
+        self.assertEqual(0, Entry.objects.count())
+        self.client.post(reverse(views.upload), {'code': 'lua1'})
+        self.assertEqual(1, Entry.objects.count())
 
 
 ## ============================================================================
 ## Helpers
 ## ============================================================================
+
 
 def load_tests(loader, tests, ignore):
     tests.addTests(doctest.DocTestSuite(logic))
