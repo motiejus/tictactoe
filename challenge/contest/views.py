@@ -9,7 +9,7 @@ from .models import Entry
 
 
 def entry(request, id):
-    entry = get_object_or_404(Entry, id)
+    entry = get_object_or_404(Entry, pk=id)
     return render_to_response(
         'contest/entry.html', {'entry': entry},
         context_instance=RequestContext(request))

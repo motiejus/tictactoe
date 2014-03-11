@@ -20,6 +20,9 @@ class Entry(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('challenge.contest.views.entry', args=[self.id])
 
+    def __str__(self):
+        return "<Entry by %s (%d bytes)>" % (self.user, len(self.code.encode('utf8')))
+
 
 class LatestEntry(models.Model):
     user = models.ForeignKey(User)
