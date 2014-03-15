@@ -6,7 +6,7 @@ install_reqs = list(parse_requirements("requirements.txt"))
 
 setup(
     name='tictactoe',
-    version='0.0.1',
+    version='0.0.2a1',
     author="Motiejus Jakštys",
     author_email="desired.mta@gmail.com",
     description="Ultimate Tic-Tac-Toe challenge front-end",
