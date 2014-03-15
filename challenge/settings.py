@@ -120,3 +120,8 @@ LOGGING = {
 
 # Maximum size of Lua code submission
 MAX_CODE_SIZE = 60000
+
+# Celery
+
+CELERY_ACCEPT_CONTENT = ['msgpack', 'yaml']
+BROKER_URL = 'redis://'

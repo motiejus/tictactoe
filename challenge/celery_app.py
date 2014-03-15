@@ -6,16 +6,8 @@ from django.conf import settings
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'challenge.settings')
-
 app = Celery('challenge')
-
-
-class Config:
-    CELERY_ACCEPT_CONTENT = ['msgpack', 'yaml']
-    BROKER_URL = 'redis://'
-
-
-app.config_from_object(Config)
+app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
