@@ -1,4 +1,4 @@
-/devenv/
+/env/
 *.py[oc]
 /.coverage
 /.tox/
@@ -7,3 +7,5 @@
 /tictactoe/tictactoe.cfg
 /.htmlcov
 /static/
+/dist/
+/.coverage.xml
