@@ -8,7 +8,7 @@ from django.conf import settings
 
 from challenge.contest import logic
 
-from .models import Entry
+from .models import Entry, Fight
 from . import views
 
 
@@ -53,7 +53,24 @@ class ViewTestCase(TestCase):
         self.assertEqual(1, Entry.objects.count())
 
 class ResultsTestCase(TestCase):
-    setUp = lambda self: new_user(self)
+    def setUp(self):
+        new_user(self)
+        code = 'lua code'
+        self.e1 = Entry.objects.create(user=self.user1, code=code)
+        self.e1.save()
+        self.e2 = Entry.objects.create(user=self.user2, code=code)
+        self.e2.save()
+
+    def test_draw(self):
+        Fight(e1=self.e1, e2=self.e2, round1='draw', round2='draw').save()
+        self.assertEqual({'win': 0, 'draw': 1, 'loss': 0}, self.e1.results)
+        self.assertEqual({'win': 0, 'draw': 1, 'loss': 0}, self.e2.results)
+
+    def test_win_loss(self):
+        Fight(e1=self.e1, e2=self.e2, round1='e1', round2='draw').save()
+        self.assertEqual({'win': 1, 'draw': 0, 'loss': 0}, self.e1.results)
+        self.assertEqual({'win': 0, 'draw': 0, 'loss': 1}, self.e2.results)
+
 
 
 ## ============================================================================
