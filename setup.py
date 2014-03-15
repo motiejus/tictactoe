@@ -9,7 +9,7 @@ setup(
     version='0.0.2a1',
     author="Motiejus Jakštys",
     author_email="desired.mta@gmail.com",
-    description="Ultimate Tic-Tac-Toe challenge front-end",
+    description="Ultimate Tic-Tac-Toe tictactoe front-end",
     long_description=open('README.rst').read(),
     url="https://github.com/Motiejus/ultimate-tic-tac-toe",
     packages=find_packages(),
@@ -17,7 +17,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            "challenge = challenge.manage:main"
+            "tictactoe = tictactoe.manage:main"
         ]
     },
     classifiers=[

@@ -6,8 +6,8 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from challenge.contest import logic
-from challenge.tools.testing import sync_celery
+from tictactoe.contest import logic
+from tictactoe.tools.testing import sync_celery
 
 from .models import Entry, LatestEntry, Fight
 from . import views

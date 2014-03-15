@@ -1,15 +1,15 @@
 import os
-from challenge.config import config
+from tictactoe.config import config
 from django.core.urlresolvers import reverse_lazy
 
 APP_DIR = os.path.dirname(__file__)
 BASE_DIR = os.path.dirname(APP_DIR)
 
-DEBUG = config.getboolean('challenge', 'debug')
+DEBUG = config.getboolean('tictactoe', 'debug')
 
 TEMPLATE_DEBUG = DEBUG
 
-SECRET_KEY = config.get('challenge', 'secret_key', fallback='supersecret')
+SECRET_KEY = config.get('tictactoe', 'secret_key', fallback='supersecret')
 
 ALLOWED_HOSTS = ['localhost']
 
@@ -25,8 +25,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'challenge.tools',
-    'challenge.contest',
+    'tictactoe.tools',
+    'tictactoe.contest',
 ) + (DEBUG and DEV_APPS or ())
 
 MIDDLEWARE_CLASSES = (
@@ -47,16 +47,16 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
-    'challenge.tools.context_processors.debug',
+    'tictactoe.tools.context_processors.debug',
 )
 
 TEMPLATE_DIRS = (
     os.path.join(APP_DIR, 'templates'),
 )
 
-ROOT_URLCONF = 'challenge.urls'
+ROOT_URLCONF = 'tictactoe.urls'
 
-WSGI_APPLICATION = 'challenge.wsgi.application'
+WSGI_APPLICATION = 'tictactoe.wsgi.application'
 
 DATABASES = {
     'default': {

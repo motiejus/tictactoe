@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
-from challenge.tools.validators import ByteLengthValidator
-from challenge.tools.models import OwnManager
+from tictactoe.tools.validators import ByteLengthValidator
+from tictactoe.tools.models import OwnManager
 
 from .logic import winner
 from .tasks import schedule_fight
@@ -49,7 +49,7 @@ class Entry(models.Model):
         return len(self.code.encode('utf8'))
 
     def get_absolute_url(self):
-        return reverse_lazy('challenge.contest.views.entry', args=[self.id])
+        return reverse_lazy('tictactoe.contest.views.entry', args=[self.id])
 
     def __str__(self):
         return "<Entry by %s (%d bytes)>" % (self.user, self.codesize)

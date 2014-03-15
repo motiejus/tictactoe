@@ -1,7 +1,7 @@
 # encoding: utf8
 from django.db import models, migrations
 from django.conf import settings
-import challenge.tools.validators
+import tictactoe.tools.validators
 
 
 class Migration(migrations.Migration):
@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, to_field='id')),
-                ('code', models.TextField(validators=[challenge.tools.validators.ByteLengthValidator(60000)])),
+                ('code', models.TextField(validators=[tictactoe.tools.validators.ByteLengthValidator(60000)])),
                 ('uploaded', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
             ],

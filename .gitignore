@@ -2,8 +2,8 @@
 *.py[oc]
 /.coverage
 /.tox/
-/challenge.egg-info/
-/challenge/challenge.db
-/challenge/challenge.cfg
+/tictactoe.egg-info/
+/tictactoe/tictactoe.db
+/tictactoe/tictactoe.cfg
 /.htmlcov
 /static/
