@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 
 from challenge.tools.validators import ByteLengthValidator
+from challenge.tools.models import OwnManager
 
 from .logic import winner
 
@@ -14,14 +15,43 @@ class Entry(models.Model):
 
     user = models.ForeignKey(User)
     code = models.TextField(validators=[_max_len])
-    fights = models.ManyToManyField(
-        'Entry', symmetrical=False, through='Fight', blank=True)
+    fights = models.ManyToManyField('Fight', symmetrical=False, blank=True)
+
+    uploaded = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    objects = models.Manager()
+    own = OwnManager('user')
+
+    @property
+    def results(self):
+        """Return dictionary (wins, draws, losses) of this entry"""
+        if hasattr(self, '_results'):
+            return self._results
+        flip = lambda e: 'e2' if e == 'e1' else 'e1'
+        win, draw, loss = 0, 0, 0
+        for e in 'e1', 'e2':
+            for fight in Fight.objects.filter(**{e : self}):
+                if fight.winner == e:
+                    win += 1
+                elif fight.winner == flip(e):
+                    loss += 1
+                elif fight.winner == 'draw':
+                    draw += 1
+                else:
+                    assert False, "bad winner"
+        self._results = {'win': win, 'draw': draw, 'loss': loss}
+        return self._results
+
+    @property
+    def codesize(self):
+        return len(self.code.encode('utf8'))
 
     def get_absolute_url(self):
         return reverse_lazy('challenge.contest.views.entry', args=[self.id])
 
     def __str__(self):
-        return "<Entry by %s (%d bytes)>" % (self.user, len(self.code.encode('utf8')))
+        return "<Entry by %s (%d bytes)>" % (self.user, self.codesize)
 
 
 class LatestEntry(models.Model):
@@ -52,6 +82,7 @@ class Fight(models.Model):
     class Meta:
         unique_together = ('e1', 'e2')
 
+    @property
     def winner(self):
         """Returns: 'e1', 'e2', 'draw'"""
-        return winner(self.r1, self.r2)
+        return winner(self.round1, self.round2)

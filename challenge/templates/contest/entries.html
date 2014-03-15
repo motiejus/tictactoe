@@ -1,0 +1,28 @@
+{% extends "main.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Entry list" %}{% endblock %}
+
+{% block content %}
+
+<table border="1" style="border-collapse: collapse" cellpadding="5px" cellspacing="1">
+  <th>
+    <td>User</td>
+    <td>Size (bytes)</td>
+    <td>Uploaded</td>
+    <td>Win</td>
+    <td>Draw</td>
+    <td>Loss</td>
+  </th>
+  {% for entry in entries %}
+  <tr>
+    <td>{{ entry.user }}</td>
+    <td>{{ entry.codesize }}</td>
+    <td>{{ entry.uploaded|date:"y-m-d H:i:s" }}</td>
+    <td>{{ entry.results.win }}</td>
+    <td>{{ entry.results.draw }}</td>
+    <td>{{ entry.results.loss }}</td>
+  {% endfor %}
+</table>
+
+{% endblock %}

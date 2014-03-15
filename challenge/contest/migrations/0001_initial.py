@@ -1,7 +1,7 @@
 # encoding: utf8
 from django.db import models, migrations
-import challenge.tools.validators
 from django.conf import settings
+import challenge.tools.validators
 
 
 class Migration(migrations.Migration):
@@ -14,9 +14,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Entry',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
-                ('user', models.ForeignKey(to_field='id', to=settings.AUTH_USER_MODEL)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, to_field='id')),
                 ('code', models.TextField(validators=[challenge.tools.validators.ByteLengthValidator(60000)])),
+                ('uploaded', models.DateTimeField(auto_now_add=True)),
+                ('modified', models.DateTimeField(auto_now=True)),
             ],
             options={
             },
@@ -25,11 +27,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Fight',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
-                ('e1', models.ForeignKey(to_field='id', to='contest.Entry')),
-                ('e2', models.ForeignKey(to_field='id', to='contest.Entry')),
-                ('round1', models.CharField(max_length=16, choices=[('e1', 'Entry 1 won'), ('e2', 'Entry 2 won'), ('draw', 'Draw'), ('Error', (('error1', 'Error by Entry 1'), ('error2', 'Error by Entry 2')))])),
-                ('round2', models.CharField(max_length=16, choices=[('e1', 'Entry 1 won'), ('e2', 'Entry 2 won'), ('draw', 'Draw'), ('Error', (('error1', 'Error by Entry 1'), ('error2', 'Error by Entry 2')))])),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('e1', models.ForeignKey(to='contest.Entry', to_field='id')),
+                ('e2', models.ForeignKey(to='contest.Entry', to_field='id')),
+                ('round1', models.CharField(choices=[('e1', 'Entry 1 won'), ('e2', 'Entry 2 won'), ('draw', 'Draw'), ('Error', (('error1', 'Error by Entry 1'), ('error2', 'Error by Entry 2')))], max_length=16)),
+                ('round2', models.CharField(choices=[('e1', 'Entry 1 won'), ('e2', 'Entry 2 won'), ('draw', 'Draw'), ('Error', (('error1', 'Error by Entry 1'), ('error2', 'Error by Entry 2')))], max_length=16)),
             ],
             options={
                 'unique_together': set([('e1', 'e2')]),
@@ -39,9 +41,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LatestEntry',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
-                ('user', models.ForeignKey(to_field='id', to=settings.AUTH_USER_MODEL)),
-                ('entry', models.ForeignKey(to_field='id', to='contest.Entry')),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, to_field='id')),
+                ('entry', models.ForeignKey(to='contest.Entry', to_field='id')),
             ],
             options={
             },

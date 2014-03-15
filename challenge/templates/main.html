@@ -13,6 +13,11 @@
           {% trans "Upload" %}
         </a>
         </li>
+       <li>
+         <a href="{% url "challenge.contest.views.entries" %}">
+          {% trans "Entries (all)" %}
+        </a>
+        </li>
        {% if request.user.is_anonymous %}
          <li><a href="{% url "login" %}">{% trans "Login" %}</a></li>
        {% else %}

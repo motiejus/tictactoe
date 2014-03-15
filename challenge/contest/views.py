@@ -5,13 +5,20 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from .forms import CodeUploadForm
-from .models import Entry
+from .models import Entry, LatestEntry
 
 
 def entry(request, id):
     entry = get_object_or_404(Entry, pk=id)
     return render_to_response(
         'contest/entry.html', {'entry': entry},
+        context_instance=RequestContext(request))
+
+
+def entries(request):
+    entries = LatestEntry.objects.all()
+    return render_to_response(
+        'contest/entries.html', {'entries': entries},
         context_instance=RequestContext(request))
 
 
@@ -23,6 +30,12 @@ def upload(request):
             entry = form.instance
             entry.user = request.user
             entry.save()
+            latest = LatestEntry.objects.filter(user=request.user)
+            if latest:
+                latest.entry = entry
+            else:
+                latest = LatestEntry(user=request.user, entry=entry)
+            latest.save()
             messages.success(request, _("Code uploaded"))
             return redirect(entry.get_absolute_url())
     else:

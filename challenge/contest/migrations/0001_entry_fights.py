@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='entry',
             name='fights',
-            field=models.ManyToManyField(blank=True, to='contest.Entry'),
+            field=models.ManyToManyField(blank=True, to='contest.Fight'),
             preserve_default=True,
         ),
     ]
