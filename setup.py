@@ -21,9 +21,9 @@ setup(
         ]
     },
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha"
-        "Programming Language :: Python :: 3"
-        "Intended Audience :: Education"
+        "Development Status :: 2 - Pre-Alpha",
+        "Programming Language :: Python :: 3",
+        "Intended Audience :: Education",
         "Topic :: Games/Entertainment :: Puzzle Games",
         "License :: OSI Approved :: MIT License",
     ],
