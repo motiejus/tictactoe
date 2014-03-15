@@ -7,8 +7,9 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 
 from challenge.contest import logic
+from challenge.tools.testing import sync_celery
 
-from .models import Entry, Fight
+from .models import Entry, LatestEntry, Fight
 from . import views
 
 
@@ -54,13 +55,7 @@ class ViewTestCase(TestCase):
 
 
 class ResultsTestCase(TestCase):
-    def setUp(self):
-        new_user(self)
-        code = 'lua code'
-        self.e1 = Entry.objects.create(user=self.user1, code=code)
-        self.e1.save()
-        self.e2 = Entry.objects.create(user=self.user2, code=code)
-        self.e2.save()
+    setUp = lambda self: new_user(self) or new_entry(self)
 
     def test_draw(self):
         Fight(e1=self.e1, e2=self.e2, round1='draw', round2='draw').save()
@@ -71,6 +66,15 @@ class ResultsTestCase(TestCase):
         Fight(e1=self.e1, e2=self.e2, round1='e1', round2='draw').save()
         self.assertEqual({'win': 1, 'draw': 0, 'loss': 0}, self.e1.results)
         self.assertEqual({'win': 0, 'draw': 0, 'loss': 1}, self.e2.results)
+
+
+@sync_celery
+class CeleryFightTestCase(TestCase):
+    setUp = lambda self: new_user(self) or new_entry(self)
+
+    def test_two_users_draw(self):
+        self.e2.compete()
+        self.assertEqual(1, Fight.objects.count())
 
 
 ## ============================================================================
@@ -90,3 +94,13 @@ def new_user(self):
     self.user2 = User.objects.create(username='u2')
     self.user2.set_password('u2')
     self.user2.save()
+
+
+def new_entry(self):
+    code = 'lua code'
+    self.e1 = Entry.objects.create(user=self.user1, code=code)
+    self.e1.save()
+    self.assertEqual(1, LatestEntry.objects.count())
+    self.e2 = Entry.objects.create(user=self.user2, code=code)
+    self.e2.save()
+    self.assertEqual(2, LatestEntry.objects.count())

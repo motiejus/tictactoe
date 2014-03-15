@@ -8,6 +8,7 @@ from challenge.tools.validators import ByteLengthValidator
 from challenge.tools.models import OwnManager
 
 from .logic import winner
+from .tasks import schedule_fight
 
 
 class Entry(models.Model):
@@ -52,6 +53,28 @@ class Entry(models.Model):
 
     def __str__(self):
         return "<Entry by %s (%d bytes)>" % (self.user, self.codesize)
+
+    @staticmethod
+    def add_latest(sender, instance, created, **kwargs):
+        """After saving Entry instance, make it LatestEntry of this user"""
+        latest = LatestEntry.objects.filter(user=instance.user).first()
+        if latest is None:
+            LatestEntry(user=instance.user, entry=instance).save()
+        else:
+            latest.entry = instance
+            latest.save()
+
+    def compete(self):
+        """Compete with all LatestEntries of non-current user.
+
+        Schedules a few tasks for celery
+        """
+        latest_entries = LatestEntry.objects.exclude(user=self.user).all()
+        for entry in (e.entry for e in latest_entries):
+            schedule_fight.delay(self, entry)
+
+
+models.signals.post_save.connect(Entry.add_latest, sender=Entry)
 
 
 class LatestEntry(models.Model):

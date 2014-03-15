@@ -30,12 +30,7 @@ def upload(request):
             entry = form.instance
             entry.user = request.user
             entry.save()
-            latest = LatestEntry.objects.filter(user=request.user)
-            if latest:
-                latest.entry = entry
-            else:
-                latest = LatestEntry(user=request.user, entry=entry)
-            latest.save()
+            entry.compete()
             messages.success(request, _("Code uploaded"))
             return redirect(entry.get_absolute_url())
     else:
