@@ -1,5 +1,5 @@
 msgpack-python==0.4.1
 http://www.djangoproject.com/m/releases/1.7/Django-1.7a2.tar.gz#egg=django
 celery==3.1.9
-tictaclib==0.0.1
+tictactoelib==0.0.1
 redis==2.9.1
