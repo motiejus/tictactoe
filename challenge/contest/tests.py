@@ -18,15 +18,20 @@ class EntryTestCase(TestCase):
     def test_code_constraint_over(self):
         """code less than allowed chars, more than allowed bytes"""
         # 'š' is a 2-byte utf8 character
-        code1 = "".join(['š'] * (settings.MAX_CODE_SIZE // 2 + 1))
-        e1 = Entry.objects.create(user=self.user1, code=code1)
-        self.assertRaises(ValidationError, e1.full_clean)
+        code = "".join(['š'] * (settings.MAX_CODE_SIZE // 2 + 1))
+        e = Entry.objects.create(user=self.user1, code=code)
+        self.assertRaises(ValidationError, e.full_clean)
 
     def test_code_constraint_just_enough(self):
         # 'š' is a 2-byte utf8 character
-        code2 = "".join(['š'] * (settings.MAX_CODE_SIZE // 2))
-        e2 = Entry.objects.create(user=self.user1, code=code2)
-        self.assertIsNone(e2.full_clean())
+        code = "".join(['š'] * (settings.MAX_CODE_SIZE // 2))
+        e = Entry.objects.create(user=self.user1, code=code)
+        self.assertIsNone(e.full_clean())
+
+    def test_code_size(self):
+        code = 'žžž'
+        e = Entry.objects.create(user=self.user1, code=code)
+        self.assertEqual(6, e.codesize)
 
 
 class ViewTestCase(TestCase):
