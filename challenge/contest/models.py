@@ -31,7 +31,7 @@ class Entry(models.Model):
         flip = lambda e: 'e2' if e == 'e1' else 'e1'
         win, draw, loss = 0, 0, 0
         for e in 'e1', 'e2':
-            for fight in Fight.objects.filter(**{e : self}):
+            for fight in Fight.objects.filter(**{e: self}):
                 if fight.winner == e:
                     win += 1
                 elif fight.winner == flip(e):

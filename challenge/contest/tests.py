@@ -52,6 +52,7 @@ class ViewTestCase(TestCase):
         self.client.post(reverse(views.upload), {'code': 'lua1'})
         self.assertEqual(1, Entry.objects.count())
 
+
 class ResultsTestCase(TestCase):
     def setUp(self):
         new_user(self)
@@ -70,7 +71,6 @@ class ResultsTestCase(TestCase):
         Fight(e1=self.e1, e2=self.e2, round1='e1', round2='draw').save()
         self.assertEqual({'win': 1, 'draw': 0, 'loss': 0}, self.e1.results)
         self.assertEqual({'win': 0, 'draw': 0, 'loss': 1}, self.e2.results)
-
 
 
 ## ============================================================================
