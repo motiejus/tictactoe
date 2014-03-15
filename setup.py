@@ -5,7 +5,7 @@ from pip.req import parse_requirements
 install_reqs = list(parse_requirements("requirements.txt"))
 
 setup(
-    name='challenge',
+    name='tictactoe',
     version='0.0.1',
     author="Motiejus Jakštys",
     author_email="desired.mta@gmail.com",
