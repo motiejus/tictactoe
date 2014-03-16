@@ -7,6 +7,8 @@ from django.conf import settings
 from tictactoe.tools.validators import ByteLengthValidator
 from tictactoe.tools.models import OwnManager
 
+from . import fixtures
+
 from .logic import winner
 from .tasks import schedule_fight
 
@@ -109,3 +111,6 @@ class Fight(models.Model):
     def winner(self):
         """Returns: 'e1', 'e2', 'draw'"""
         return winner(self.round1, self.round2)
+
+
+models.signals.post_migrate.connect(fixtures.qualification_bot)
