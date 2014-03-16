@@ -9,7 +9,7 @@ test: cover style
 env/.state: requirements.txt requirements_dev.txt
 	rm -fr env
 	virtualenv -ppython3 env
-	$(BIN)/pip install -rrequirements.txt -rrequirements_dev.txt
+	$(BIN)/pip install --pre -rrequirements.txt -rrequirements_dev.txt
 	touch $@
 
 cover: env/.state
