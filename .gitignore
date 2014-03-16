@@ -1,9 +1,9 @@
-/env/
+tictactoe.db
 *.py[oc]
+/env/
 /.coverage
 /.tox/
 /tictactoe.egg-info/
-/tictactoe/tictactoe.db
 /tictactoe/tictactoe.cfg
 /.htmlcov
 /static/
