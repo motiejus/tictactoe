@@ -1,12 +1,12 @@
 BIN ?= env/bin
 
-.PHONY: all test cover style
+.PHONY: all test cover style clean
 
-all: env/.state
+all: env/.setup_done
 
 test: cover style
 
-env/.state: requirements.txt requirements_dev.txt
+env/.setup_done: requirements.txt requirements_dev.txt
 	if [ -f $@ ]; then \
 		$(BIN)/pip install --pre -rrequirements.txt -rrequirements_dev.txt; \
 		touch $@; \
@@ -17,11 +17,14 @@ env/.state: requirements.txt requirements_dev.txt
 		touch $@; \
 	fi
 
-cover: env/.state
+cover: env/.setup_done
 	$(BIN)/coverage run --source='tictactoe' -m tictactoe.manage test --noinput
 	$(BIN)/coverage xml -o .coverage.xml
 	$(BIN)/coverage html -d .htmlcov
 	echo "  See .htmlcov/index.html for coverage report"
 
-style: env/.state
+style: env/.setup_done
 	$(BIN)/flake8 --exclude=migrations tictactoe setup.py
+
+clean:
+	rm -fr env
