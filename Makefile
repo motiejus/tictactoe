@@ -28,3 +28,4 @@ style: env/.setup_done
 
 clean:
 	rm -fr env
+	find -name '*.py[co]' -exec rm {} \;
