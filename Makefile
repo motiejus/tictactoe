@@ -7,10 +7,15 @@ all: env/.state
 test: cover style
 
 env/.state: requirements.txt requirements_dev.txt
-	rm -fr env
-	virtualenv -ppython3 env
-	$(BIN)/pip install --pre -rrequirements.txt -rrequirements_dev.txt
-	touch $@
+	if [ -f $@ ]; then \
+		$(BIN)/pip install --pre -rrequirements.txt -rrequirements_dev.txt; \
+		touch $@; \
+	else \
+		rm -fr env; \
+		virtualenv -ppython3 env; \
+		$(BIN)/pip install --pre -rrequirements.txt -rrequirements_dev.txt; \
+		touch $@; \
+	fi
 
 cover: env/.state
 	$(BIN)/coverage run --source='tictactoe' -m tictactoe.manage test --noinput
