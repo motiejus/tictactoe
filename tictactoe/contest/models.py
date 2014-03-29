@@ -9,7 +9,6 @@ from tictactoe.tools.models import OwnManager
 
 from . import fixtures
 
-from .logic import winner
 from .tasks import schedule_fight
 
 
@@ -18,7 +17,10 @@ class Entry(models.Model):
 
     user = models.ForeignKey(User)
     code = models.TextField(validators=[_max_len])
-    fights = models.ManyToManyField('Fight', symmetrical=False, blank=True)
+    win = models.ManyToManyField(
+        'self', symmetrical=False, related_name='loss',
+        through='Fight')
+    draw = models.ManyToManyField('self', through='Fight')
 
     uploaded = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -28,23 +30,12 @@ class Entry(models.Model):
 
     @property
     def results(self):
-        """Return dictionary (wins, draws, losses) of this entry"""
-        if hasattr(self, '_results'):
-            return self._results
-        flip = lambda e: 'e2' if e == 'e1' else 'e1'
-        win, draw, loss = 0, 0, 0
-        for e in 'e1', 'e2':
-            for fight in Fight.objects.filter(**{e: self}):
-                if fight.winner == e:
-                    win += 1
-                elif fight.winner == flip(e):
-                    loss += 1
-                elif fight.winner == 'draw':
-                    draw += 1
-                else:
-                    assert False, "bad winner"
-        self._results = {'win': win, 'draw': draw, 'loss': loss}
-        return self._results
+        """Return dictionary (wins, draws, losses) of this entry.
+        
+        
+        `draw` is non-symmetric, so we have to add the relationship backwards 
+        as well."""
+        return (self.win.count(), self.draw.count(), self.loss.count())
 
     @property
     def codesize(self):
@@ -85,32 +76,24 @@ class LatestEntry(models.Model):
 
 
 class Fight(models.Model):
-    """Encapsulates fight between two entries. Results of 2 rounds.
+    e1 = models.ForeignKey(Entry)
+    e2 = models.ForeignKey(Entry)
 
-    Round1: e1 = x, e2 = o;
-    Round2: e1 = o, e2 = x
-    """
-    FIGHT_RESULTS = (
-        ('e1', _("Entry 1 won")),
-        ('e2', _("Entry 2 won")),
-        ('draw', _("Draw")),
-        ('Error', (
-            ('error1', _("Error by Entry 1")),
-            ('error2', _("Error by Entry 2"))))
+    # len(",".join(map(str, range(1, 81)))) == 230
+    # Zero signifies error and in case of error is always the last number
+    gameplay = models.CommaSeparatedIntegerField(
+        max_length=230,
+        help_text=_(
+            "Gameplay flow. Board is separated to 81 cells. Each "
+            "number means a move by alternating player. For example, "
+            "'10,1,0' means: x placed (2,1,1,1), o placed (1,1,1,1) and "
+            "x made an error. In case 0 is at the end (like in the example), "
+            "'error' field is non-empty.")
     )
-
-    e1 = models.ForeignKey(Entry, related_name='+')
-    e2 = models.ForeignKey(Entry, related_name='+')
-    round1 = models.CharField(max_length=16, choices=FIGHT_RESULTS)
-    round2 = models.CharField(max_length=16, choices=FIGHT_RESULTS)
-
-    class Meta:
-        unique_together = ('e1', 'e2')
-
-    @property
-    def winner(self):
-        """Returns: 'e1', 'e2', 'draw'"""
-        return winner(self.round1, self.round2)
+    error = models.CharField(
+        max_length=255, blank=True,
+        help_text=_("Non-empty if `gameplay' ends with zero")
+    )
 
 
 models.signals.post_migrate.connect(fixtures.qualification_bot)
