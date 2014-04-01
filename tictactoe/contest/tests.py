@@ -1,4 +1,5 @@
 import doctest
+from unittest import skipIf
 
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -49,25 +50,27 @@ class ViewTestCase(TestCase):
 
     def test_upload_post(self):
         self.assertTrue(self.client.login(username='u1', password='u1'))
-        self.assertEqual(0, Entry.objects.count())
-        self.client.post(reverse(views.upload), {'code': 'lua1'})
         self.assertEqual(1, Entry.objects.count())
+        self.client.post(reverse(views.upload), {'code': 'lua1'})
+        self.assertEqual(2, Entry.objects.count())
 
 
 class ResultsTestCase(TestCase):
     setUp = lambda self: new_user(self) or new_entry(self)
 
     def test_draw(self):
-        Fight(e1=self.e1, e2=self.e2, round1='draw', round2='draw').save()
-        self.assertEqual({'win': 0, 'draw': 1, 'loss': 0}, self.e1.results)
-        self.assertEqual({'win': 0, 'draw': 1, 'loss': 0}, self.e2.results)
+        Fight(x=self.e1, o=self.e2, result='draw').save()
+        Fight(x=self.e2, o=self.e1, result='draw').save()
+        self.assertEqual((0, 2, 0), self.e1.results)
+        self.assertEqual((0, 2, 0), self.e2.results)
 
     def test_win_loss(self):
-        Fight(e1=self.e1, e2=self.e2, round1='e1', round2='draw').save()
-        self.assertEqual({'win': 1, 'draw': 0, 'loss': 0}, self.e1.results)
-        self.assertEqual({'win': 0, 'draw': 0, 'loss': 1}, self.e2.results)
+        Fight(x=self.e1, o=self.e2, result='win').save()
+        self.assertEqual((1, 0, 0), self.e1.results)
+        self.assertEqual((0, 0, 1), self.e2.results)
 
 
+@skipIf(True, "not implemented")
 @sync_celery
 class CeleryFightTestCase(TestCase):
     setUp = lambda self: new_user(self) or new_entry(self)
@@ -77,9 +80,9 @@ class CeleryFightTestCase(TestCase):
         self.assertEqual(1, Fight.objects.count())
 
 
-## ============================================================================
-## Helpers
-## ============================================================================
+# ============================================================================
+# Helpers
+# ============================================================================
 
 
 def load_tests(loader, tests, ignore):
@@ -98,9 +101,11 @@ def new_user(self):
 
 def new_entry(self):
     code = 'lua code'
+    # There is always a fixture in the beginning
+    self.assertEqual(1, LatestEntry.objects.count())
     self.e1 = Entry.objects.create(user=self.user1, code=code)
     self.e1.save()
-    self.assertEqual(1, LatestEntry.objects.count())
+    self.assertEqual(2, LatestEntry.objects.count())
     self.e2 = Entry.objects.create(user=self.user2, code=code)
     self.e2.save()
-    self.assertEqual(2, LatestEntry.objects.count())
+    self.assertEqual(3, LatestEntry.objects.count())

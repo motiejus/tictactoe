@@ -30,7 +30,7 @@ def upload(request):
             entry = form.instance
             entry.user = request.user
             entry.save()
-            entry.compete()
+            entry.qualify()
             messages.success(request, _("Code uploaded"))
             return redirect(entry.get_absolute_url())
     else:

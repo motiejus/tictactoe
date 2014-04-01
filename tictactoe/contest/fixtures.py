@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from tictactoelib.examples import player1
 
 
-
 def qualification_bot(sender, **kwargs):
     from .models import Entry
 

@@ -9,7 +9,7 @@ from tictactoe.tools.models import OwnManager
 
 from . import fixtures
 
-from .tasks import schedule_fight
+from .tasks import schedule_qualification
 
 
 class Entry(models.Model):
@@ -17,10 +17,6 @@ class Entry(models.Model):
 
     user = models.ForeignKey(User)
     code = models.TextField(validators=[_max_len])
-    win = models.ManyToManyField(
-        'self', symmetrical=False, related_name='loss',
-        through='Fight')
-    draw = models.ManyToManyField('self', through='Fight')
 
     uploaded = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -31,11 +27,14 @@ class Entry(models.Model):
     @property
     def results(self):
         """Return dictionary (wins, draws, losses) of this entry.
-        
-        
-        `draw` is non-symmetric, so we have to add the relationship backwards 
-        as well."""
-        return (self.win.count(), self.draw.count(), self.loss.count())
+
+        TODO: rewrite to ORM/SQL in the future?"""
+        r1 = Fight.objects.filter(x=self).values_list('result', flat=True)
+        r2 = Fight.objects.filter(o=self).values_list('result', flat=True)
+        wins = [1 for r in r1 if r == 'win'] + [1 for r in r2 if r == 'loss']
+        lose = [1 for r in r1 if r == 'loss'] + [1 for r in r2 if r == 'win']
+        draw = [1 for r in r1 if r == 'draw'] + [1 for r in r2 if r == 'draw']
+        return sum(wins), sum(draw), sum(lose)
 
     @property
     def codesize(self):
@@ -57,14 +56,9 @@ class Entry(models.Model):
             latest.entry = instance
             latest.save()
 
-    def compete(self):
-        """Compete with all LatestEntries of non-current user.
-
-        Schedules a few tasks for celery
-        """
-        latest_entries = LatestEntry.objects.exclude(user=self.user).all()
-        for entry in (e.entry for e in latest_entries):
-            schedule_fight.delay(self, entry)
+    def qualify(self):
+        """Scheulde a qualification with example player1"""
+        schedule_qualification(self)
 
 
 models.signals.post_save.connect(Entry.add_latest, sender=Entry)
@@ -76,8 +70,18 @@ class LatestEntry(models.Model):
 
 
 class Fight(models.Model):
-    e1 = models.ForeignKey(Entry)
-    e2 = models.ForeignKey(Entry)
+    """e1 is x, e2 is o. Results relative to e1.
+
+    Each Entry has two Fight objects: one with x, one with o"""
+
+    FIGHT_RESULT = (
+        ('win', _('win')),
+        ('draw', _('draw')),
+        ('loss', _('loss')),
+    )
+
+    x = models.ForeignKey(Entry, related_name='e1')
+    o = models.ForeignKey(Entry, related_name='e2')
 
     # len(",".join(map(str, range(1, 81)))) == 230
     # Zero signifies error and in case of error is always the last number
@@ -90,10 +94,22 @@ class Fight(models.Model):
             "x made an error. In case 0 is at the end (like in the example), "
             "'error' field is non-empty.")
     )
+
     error = models.CharField(
         max_length=255, blank=True,
         help_text=_("Non-empty if `gameplay' ends with zero")
     )
+
+    result = models.CharField(
+        max_length=10, choices=FIGHT_RESULT,
+        help_text=_("Fight result of x (e1) versus o (e2). Relative to e1.")
+    )
+
+    class Meta:
+        index_together = (
+            ('x', 'result'),
+            ('o', 'result'),
+        )
 
 
 models.signals.post_migrate.connect(fixtures.qualification_bot)

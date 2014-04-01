@@ -1,15 +1,18 @@
-#from tictactoelib.headless_run import compete
-#from tictactoelib.examples import player1
+# from tictactoelib.headless_run import compete
+# from tictactoelib.examples import player1
 
 from tictactoe.celery_app import app
 
 
 @app.task
-def schedule_qualifying(e1):
+def schedule_qualification(e1):
+    pass
+    """
     round1 = compete(e1.code, player1)
     if round1 == 'e2':
         return
     round2 = compete(player1, e1.code)
+    """
 
 
 @app.task
