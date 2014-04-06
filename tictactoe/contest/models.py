@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.urlresolvers import reverse_lazy
+from django.core.serializers import serialize
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -57,7 +58,7 @@ class Entry(models.Model):
     def qualify(self):
         """Scheulde a qualification with example dumb_player"""
         from .tasks import schedule_qualification
-        schedule_qualification(self)
+        schedule_qualification.delay(serialize('json', [self]))
 
     @staticmethod
     def qualification_entry():

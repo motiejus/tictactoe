@@ -80,8 +80,11 @@ class CeleryFightTestCase(TestCase):
 
     @skipIf(True, "not implemented")
     def test_two_users_draw(self):
-        self.e2.compete()
-        self.assertEqual(1, Fight.objects.count())
+        self.test_qualify()
+        self.e2.qualify()
+        # Verify e1 played against e2 and got draw
+        self.assertEqual((0, 2, 2), self.e1.results)
+        self.assertEqual((0, 2, 2), self.e2.results)
 
 
 # ============================================================================
