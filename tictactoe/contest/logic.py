@@ -3,51 +3,82 @@
 __all__ = ['winner']
 
 
+def flip(res):
+    """flips 'x', 'o' or 'draw'."""
+    if res == 'x':
+        return 'o'
+    elif res == 'o':
+        return 'x'
+    elif res == 'draw':
+        return 'draw'
+    else:
+        raise RuntimeError("Invalid res: %s" % str(res))
+
+
 def error_to_win(r):
     """Change one's error to other's win"""
-
-    if r == 'error1':
-        return 'e2'
-    elif r == 'error2':
-        return 'e1'
+    flip = lambda c: c == 'x' and 'o' or 'x'
+    if r[0] == 'error':
+        return flip(r[1])
+    elif r[0] == 'ok':
+        return r[1]
     else:
-        return r
+        raise RuntimeError("Invalid r[0]: %s", str(r[0]))
 
 
 def winner(r1, r2):
-    """Return winner after two rounds
+    """Return winner of two rounds: 'e1' or 'e2' or 'draw'.
 
-    >>> winner('e1', 'e1')
+    round1 is e1 (x) vs e2 (o). round2 is e2(x) vs e1(o).
+
+    Input format of r1 and r2:
+    * 'ok', 'x' | 'draw' | 'o', ...
+    * 'error', 'x' | 'o', ...
+
+    >>> okx = 'ok', 'x'
+    >>> oko = 'ok', 'o'
+    >>> okdraw = 'ok', 'draw'
+    >>> errx = 'error', 'x'
+    >>> erro = 'error', 'o'
+
+    >>> winner(okx, oko)
     'e1'
-    >>> winner('e1', 'e2')
+    >>> winner(okx, okx)
     'draw'
-    >>> winner('e2', 'e1')
+    >>> winner(oko, oko)
     'draw'
-    >>> winner('e1', 'error1')
+    >>> winner(okx, erro)
     'draw'
-    >>> winner('e1', 'error2')
+    >>> winner(okx, errx)
     'e1'
-    >>> winner('error1', 'error2')
+    >>> winner(errx, errx)
     'draw'
-    >>> winner('error2', 'error1')
+    >>> winner(erro, erro)
     'draw'
-    >>> winner('error1', 'error1')
+    >>> winner(errx, erro)
     'e2'
-    >>> winner('draw', 'draw')
+    >>> winner(okdraw, okdraw)
     'draw'
-    >>> winner('draw', 'e1')
+    >>> winner(okdraw, oko)
     'e1'
-    >>> winner('draw', 'error1')
+    >>> winner(okdraw, erro)
     'e2'
     """
-    r1 = error_to_win(r1)
-    r2 = error_to_win(r2)
 
-    # No errors from this point, only 'draw', 'e1' or 'e2'
-    if r1 == r2:  # both rounds same won or both draw
-        return r1
-    elif r1.startswith('e') and r2.startswith('e'):  # both won
-        return 'draw'
+    f1 = error_to_win(r1)
+    f2 = error_to_win(r2)
 
-    # One draw, the other won. Pick the winner.
-    return r1 == 'draw' and r2 or r1
+    return {
+        ('x', 'o'): 'e1',
+        ('o', 'x'): 'e2',
+
+        ('draw', 'o'): 'e1',
+        ('o', 'draw'): 'e2',
+
+        ('draw', 'x'): 'e2',
+        ('x', 'draw'): 'e1',
+
+        ('x', 'x'): 'draw',
+        ('o', 'o'): 'draw',
+        ('draw', 'draw'): 'draw',
+        }[(f1, f2)]

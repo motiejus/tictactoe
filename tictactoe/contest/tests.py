@@ -70,11 +70,14 @@ class ResultsTestCase(TestCase):
         self.assertEqual((0, 0, 1), self.e2.results)
 
 
-@skipIf(True, "not implemented")
 @sync_celery
 class CeleryFightTestCase(TestCase):
     setUp = lambda self: new_user(self) or new_entry(self)
 
+    def test_qualify(self):
+        self.e1.qualify()
+
+    @skipIf(True, "not implemented")
     def test_two_users_draw(self):
         self.e2.compete()
         self.assertEqual(1, Fight.objects.count())
@@ -100,12 +103,12 @@ def new_user(self):
 
 
 def new_entry(self):
-    code = 'lua code'
+    code1 = 'lua code'
     # There is always a fixture in the beginning
     self.assertEqual(1, LatestEntry.objects.count())
-    self.e1 = Entry.objects.create(user=self.user1, code=code)
+    self.e1 = Entry.objects.create(user=self.user1, code=code1)
     self.e1.save()
     self.assertEqual(2, LatestEntry.objects.count())
-    self.e2 = Entry.objects.create(user=self.user2, code=code)
+    self.e2 = Entry.objects.create(user=self.user2, code=code1)
     self.e2.save()
     self.assertEqual(3, LatestEntry.objects.count())

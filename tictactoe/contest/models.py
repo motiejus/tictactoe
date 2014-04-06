@@ -57,7 +57,7 @@ class Entry(models.Model):
             latest.save()
 
     def qualify(self):
-        """Scheulde a qualification with example player1"""
+        """Scheulde a qualification with example dumb_player"""
         schedule_qualification(self)
 
 
