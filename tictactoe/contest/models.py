@@ -9,8 +9,6 @@ from tictactoe.tools.models import OwnManager
 
 from . import fixtures
 
-from .tasks import schedule_qualification
-
 
 class Entry(models.Model):
     _max_len = ByteLengthValidator(settings.MAX_CODE_SIZE)
@@ -58,7 +56,13 @@ class Entry(models.Model):
 
     def qualify(self):
         """Scheulde a qualification with example dumb_player"""
+        from .tasks import schedule_qualification
         schedule_qualification(self)
+
+    @staticmethod
+    def qualification_entry():
+        u = User.objects.get(username='Qualification-Bot')
+        return Entry.objects.get(user=u)
 
 
 models.signals.post_save.connect(Entry.add_latest, sender=Entry)
@@ -110,6 +114,23 @@ class Fight(models.Model):
             ('x', 'result'),
             ('o', 'result'),
         )
+
+    @staticmethod
+    def from_compete(x, o, round_result):
+        """Creates Fight instance from output of tictactoelib.compete"""
+        if round_result[0] == 'ok':
+            _, xodraw, gameplay = round_result
+            res = 'draw'
+            if xodraw == 'x' or xodraw == 'o':
+                res = xodraw
+            return Fight(x=x, o=o, gameplay=gameplay, result=res)
+        elif round_result[0] == 'error':
+            _, xo, reason, gameplay = round_result
+            res = 'win' if xo == 'o' else 'loss'
+            return Fight(x=x, o=o, gameplay=gameplay, error=reason, result=res)
+
+    def __str__(self):
+        return "<Fight %s vs %s. Result: %s>" % (self.x, self.o, self.result)
 
 
 models.signals.post_migrate.connect(fixtures.qualification_bot)

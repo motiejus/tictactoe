@@ -1,11 +1,19 @@
 from tictactoelib import compete
-from tictactoelib.examples import dumb_player
 
 from tictactoe.celery_app import app
+
+from .models import Fight, Entry
+# from .logic import winner
 
 
 @app.task
 def schedule_qualification(e1):
-    round1 = compete(e1.code, dumb_player)
-    round2 = compete(dumb_player, e1.code)
-    print(round1, round2)
+    dumb = Entry.qualification_entry()
+    round1 = compete(e1.code, dumb.code)
+    round2 = compete(dumb.code, e1.code)
+
+    fight1 = Fight.from_compete(e1, dumb, round1)
+    fight2 = Fight.from_compete(dumb, e1, round2)
+
+    fight1.save()
+    fight2.save()
