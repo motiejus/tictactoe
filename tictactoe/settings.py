@@ -97,6 +97,9 @@ LOGGING = {
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
+        'timed': {
+            'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        },
     },
     'handlers': {
         'null': {
@@ -110,6 +113,11 @@ LOGGING = {
         },
     },
     'loggers': {
+        'tictactoe': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level': 'INFO',
+            },
         'django': {
             'handlers': ['console'],
             'propagate': True,
