@@ -45,18 +45,17 @@ class Entry(models.Model):
     def __str__(self):
         return "<Entry by %s (%d bytes)>" % (self.user, self.codesize)
 
-    @staticmethod
-    def add_latest(sender, instance, created, **kwargs):
-        """After saving Entry instance, make it LatestEntry of this user"""
-        latest = LatestEntry.objects.filter(user=instance.user).first()
+    def add_latest(self):
+        """After qualifying, make it LatestEntry of this user"""
+        latest = LatestEntry.objects.filter(user=self.user).first()
         if latest is None:
-            LatestEntry(user=instance.user, entry=instance).save()
+            LatestEntry(user=self.user, entry=self).save()
         else:
-            latest.entry = instance
+            latest.entry = self
             latest.save()
 
     def qualify(self):
-        """Scheulde a qualification with example dumb_player"""
+        """Scheulde a qualification with dumb_player and maybe go compete"""
         from .tasks import schedule_qualification
         schedule_qualification.delay(serialize('json', [self]))
 
@@ -64,9 +63,6 @@ class Entry(models.Model):
     def qualification_entry():
         u = User.objects.get(username='Qualification-Bot')
         return Entry.objects.get(user=u)
-
-
-models.signals.post_save.connect(Entry.add_latest, sender=Entry)
 
 
 class LatestEntry(models.Model):
@@ -123,7 +119,7 @@ class Fight(models.Model):
             _, xodraw, gameplay = round_result
             res = 'draw'
             if xodraw == 'x' or xodraw == 'o':
-                res = xodraw
+                res = xodraw == 'x' and 'win' or 'loss'
             return Fight(x=x, o=o, gameplay=gameplay, result=res)
         elif round_result[0] == 'error':
             _, xo, reason, gameplay = round_result

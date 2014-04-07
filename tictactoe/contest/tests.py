@@ -1,5 +1,6 @@
 import doctest
-from unittest import skipIf
+import itertools
+from unittest import mock
 
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -10,7 +11,7 @@ from django.conf import settings
 from tictactoe.contest import logic
 from tictactoe.tools.testing import sync_celery
 
-from .models import Entry, LatestEntry, Fight
+from .models import Entry, Fight
 from . import views
 
 
@@ -72,19 +73,22 @@ class ResultsTestCase(TestCase):
 
 @sync_celery
 class CeleryFightTestCase(TestCase):
+    patch_x_wins = itertools.cycle((('ok', 'x', []), ('ok', 'o', [])))
+
     setUp = lambda self: new_user(self) or new_entry(self)
 
     def test_qualify(self):
         self.e1.qualify()
         self.assertEqual((0, 0, 2), self.e1.results)
 
-    @skipIf(True, "not implemented")
-    def test_two_users_draw(self):
-        self.test_qualify()
+    @mock.patch('tictactoe.contest.tasks.compete', side_effect=patch_x_wins)
+    def test_two_users_draw(self, patch):
+        self.e1.qualify()
         self.e2.qualify()
-        # Verify e1 played against e2 and got draw
-        self.assertEqual((0, 2, 2), self.e1.results)
-        self.assertEqual((0, 2, 2), self.e2.results)
+        # e2 qualified later, so won against qualification bot + e1
+        self.assertEqual((4, 0, 0), self.e2.results)
+        # e1 qualified earlier, so lost against e2
+        self.assertEqual((2, 0, 2), self.e1.results)
 
 
 # ============================================================================
@@ -108,11 +112,5 @@ def new_user(self):
 
 def new_entry(self):
     code1 = 'lua code'
-    # There is always a fixture in the beginning
-    self.assertEqual(1, LatestEntry.objects.count())
     self.e1 = Entry.objects.create(user=self.user1, code=code1)
-    self.e1.save()
-    self.assertEqual(2, LatestEntry.objects.count())
     self.e2 = Entry.objects.create(user=self.user2, code=code1)
-    self.e2.save()
-    self.assertEqual(3, LatestEntry.objects.count())
