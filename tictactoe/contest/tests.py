@@ -37,6 +37,7 @@ class EntryTestCase(TestCase):
         self.assertEqual(6, e.codesize)
 
 
+@sync_celery
 class ViewTestCase(TestCase):
     setUp = lambda self: new_user(self)
 
