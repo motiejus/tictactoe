@@ -15,7 +15,7 @@ from django.conf import settings
 from tictactoe.contest import logic
 from tictactoe.tools.testing import sync_celery
 
-from .models import Entry, Fight
+from .models import Entry, Fight, LatestEntry
 from . import views
 
 
@@ -62,18 +62,22 @@ class ViewTestCase(TestCase):
 
 
 class ResultsTestCase(TestCase):
-    setUp = lambda self: new_user(self) or new_entry(self)
+    def setUp(self):
+        new_user(self)
+        new_entry(self)
+        self.l1 = LatestEntry.objects.create(user=self.user1, entry=self.e1)
+        self.l2 = LatestEntry.objects.create(user=self.user2, entry=self.e2)
 
     def test_draw(self):
         Fight(x=self.e1, o=self.e2, result='draw').save()
         Fight(x=self.e2, o=self.e1, result='draw').save()
-        self.assertEqual((0, 2, 0), self.e1.results)
-        self.assertEqual((0, 2, 0), self.e2.results)
+        self.assertEqual((0, 2, 0), self.l1.results)
+        self.assertEqual((0, 2, 0), self.l2.results)
 
     def test_win_loss(self):
         Fight(x=self.e1, o=self.e2, result='win').save()
-        self.assertEqual((1, 0, 0), self.e1.results)
-        self.assertEqual((0, 0, 1), self.e2.results)
+        self.assertEqual((1, 0, 0), self.l1.results)
+        self.assertEqual((0, 0, 1), self.l2.results)
 
 
 @sync_celery
@@ -84,16 +88,28 @@ class CeleryFightTestCase(TestCase):
 
     def test_qualify(self):
         self.e1.qualify()
-        self.assertEqual((0, 0, 2), self.e1.results)
+        self.l1 = LatestEntry.objects.create(user=self.user1, entry=self.e1)
+        self.assertEqual((0, 0, 0), self.l1.results)
 
     @mock.patch('tictactoe.contest.tasks.compete', side_effect=patch_x_wins)
     def test_two_users_draw(self, patch):
         self.e1.qualify()
+        l1 = LatestEntry.objects.get(entry=self.e1)
+        self.assertEqual((0, 0, 0), l1.results)
+
         self.e2.qualify()
-        # e2 qualified later, so won against qualification bot + e1
-        self.assertEqual((4, 0, 0), self.e2.results)
+        # e2 qualified later, so won against e1
+        l2 = LatestEntry.objects.get(entry=self.e2)
+        self.assertEqual((2, 0, 0), l2.results)
         # e1 qualified earlier, so lost against e2
-        self.assertEqual((2, 0, 2), self.e1.results)
+        self.assertEqual((0, 0, 2), l1.results)
+        # bot never has latestentry
+        self.assertEqual(2, LatestEntry.objects.count())
+
+        # requalification preserves the results
+        self.e2.qualify()
+        self.assertEqual((2, 0, 0), l2.results)
+        self.assertEqual((0, 0, 2), l1.results)
 
 
 # ============================================================================

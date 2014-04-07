@@ -1,3 +1,5 @@
+import logging
+
 from django.db import models
 from django.core.urlresolvers import reverse_lazy
 from django.core.serializers import serialize
@@ -11,6 +13,9 @@ from tictactoe.tools.models import OwnManager
 from . import fixtures
 
 
+logger = logging.getLogger(__name__)
+
+
 class Entry(models.Model):
     _max_len = ByteLengthValidator(settings.MAX_CODE_SIZE)
 
@@ -22,18 +27,6 @@ class Entry(models.Model):
 
     objects = models.Manager()
     own = OwnManager('user')
-
-    @property
-    def results(self):
-        """Return dictionary (wins, draws, losses) of this entry.
-
-        TODO: rewrite to ORM/SQL in the future?"""
-        r1 = Fight.objects.filter(x=self).values_list('result', flat=True)
-        r2 = Fight.objects.filter(o=self).values_list('result', flat=True)
-        wins = [1 for r in r1 if r == 'win'] + [1 for r in r2 if r == 'loss']
-        lose = [1 for r in r1 if r == 'loss'] + [1 for r in r2 if r == 'win']
-        draw = [1 for r in r1 if r == 'draw'] + [1 for r in r2 if r == 'draw']
-        return sum(wins), sum(draw), sum(lose)
 
     @property
     def codesize(self):
@@ -57,6 +50,7 @@ class Entry(models.Model):
     def qualify(self):
         """Scheulde a qualification with dumb_player and maybe go compete"""
         from .tasks import schedule_qualification
+        logger.info("Scheduling %s for qualification" % self)
         schedule_qualification.delay(serialize('json', [self]))
 
     @staticmethod
@@ -64,10 +58,34 @@ class Entry(models.Model):
         u = User.objects.get(username='Qualification-Bot')
         return Entry.objects.get(user=u)
 
+    class Meta:
+        verbose_name_plural = 'Entries'
+
 
 class LatestEntry(models.Model):
     user = models.ForeignKey(User)
     entry = models.ForeignKey(Entry)
+
+    @property
+    def results(self):
+        r1 = Fight.objects.filter(
+            x__latestentry=self, o__latestentry__isnull=False
+            ).values('result').annotate(cnt=models.Count('result'))
+        r2 = Fight.objects.filter(
+            o__latestentry=self, x__latestentry__isnull=False
+            ).values('result').annotate(cnt=models.Count('result'))
+        d1 = dict(((d['result'], d['cnt']) for d in r1))
+        d2 = dict(((d['result'], d['cnt']) for d in r2))
+        win = d1.get('win', 0) + d2.get('loss', 0)
+        draw = d1.get('draw', 0) + d2.get('draw', 0)
+        loss = d1.get('loss', 0) + d2.get('win', 0)
+        return win, draw, loss
+
+    def __str__(self):
+        return "<LatestEntry by %s>" % (self.user)
+
+    class Meta:
+        verbose_name_plural = 'Latest Entries'
 
 
 class Fight(models.Model):
@@ -111,20 +129,27 @@ class Fight(models.Model):
             ('x', 'result'),
             ('o', 'result'),
         )
+        unique_together = ('x', 'o')
 
     @staticmethod
     def from_compete(x, o, round_result):
         """Creates Fight instance from output of tictactoelib.compete"""
+        fight, _created = Fight.objects.get_or_create(x=x, o=o)
         if round_result[0] == 'ok':
             _, xodraw, gameplay = round_result
             res = 'draw'
             if xodraw == 'x' or xodraw == 'o':
                 res = xodraw == 'x' and 'win' or 'loss'
-            return Fight(x=x, o=o, gameplay=gameplay, result=res)
+            fight.gameplay = gameplay
+            fight.result = res
+            return fight
         elif round_result[0] == 'error':
             _, xo, reason, gameplay = round_result
             res = 'win' if xo == 'o' else 'loss'
-            return Fight(x=x, o=o, gameplay=gameplay, error=reason, result=res)
+            fight.gameplay = gameplay
+            fight.error = reason
+            fight.result = res
+            return fight
 
     def __str__(self):
         return "<Fight %s vs %s. Result: %s>" % (self.x, self.o, self.result)
