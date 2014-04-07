@@ -16,6 +16,7 @@ def entry(request, id):
         'contest/entry.html', {'entry': entry, 'fights': fights},
         context_instance=RequestContext(request))
 
+
 def fight(request, id):
     fight = get_object_or_404(Fight, pk=id)
     return render_to_response(
