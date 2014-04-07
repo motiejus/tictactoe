@@ -1,4 +1,5 @@
 coverage==3.7.1
 flake8==2.1.0
 django-extensions==1.3.3
+Werkzeug==0.9.4
 https://github.com/django-debug-toolbar/django-debug-toolbar/archive/1.0.1-42-gf1c67fe25ea5.tar.gz#egg=django-debug-toolbar
