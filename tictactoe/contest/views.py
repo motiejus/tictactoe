@@ -3,22 +3,29 @@ from django.template import RequestContext
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 from .forms import CodeUploadForm
-from .models import Entry, LatestEntry
+from .models import Entry, LatestEntry, Fight
 
 
 def entry(request, id):
     entry = get_object_or_404(Entry, pk=id)
+    fights = Fight.objects.filter(Q(x=entry) | Q(o=entry)).all()
     return render_to_response(
-        'contest/entry.html', {'entry': entry},
+        'contest/entry.html', {'entry': entry, 'fights': fights},
         context_instance=RequestContext(request))
 
 
 def entries(request):
-    latestentries = LatestEntry.objects.all()
+    # Piggy-back 'results' to every value
+    latest = LatestEntry.objects.all()
+    res = [e.calc_results() for e in latest]
+    [setattr(l, 'results', r) for l, r in zip(latest, res)]
+    latest2 = sorted(latest, key=lambda x: x.results[0])
+
     return render_to_response(
-        'contest/entries.html', {'latestentries': latestentries},
+        'contest/entries.html', {'latestentries': latest2},
         context_instance=RequestContext(request))
 
 

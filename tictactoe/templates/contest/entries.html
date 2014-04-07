@@ -7,21 +7,25 @@
 
 <table border="1" style="border-collapse: collapse" cellpadding="5px" cellspacing="1">
   <tr>
-    <th>User</th>
-    <th>Size (bytes)</th>
-    <th>Uploaded</th>
-    <th>Win</th>
-    <th>Draw</th>
-    <th>Loss</td>
+    <th>{% trans "User" %}</th>
+    <th>{% trans "Entry Size (bytes)" %}</th>
+    <th>{% trans "Uploaded" %}</th>
+    <th>{% trans "Wins" %}</th>
+    <th>{% trans "Draws" %}</th>
+    <th>{% trans "Losses" %}</th>
   </tr>
   {% for latestentry in latestentries %}
   <tr>
     <td>{{ latestentry.user }}</td>
     <td>{{ latestentry.entry.codesize }}</td>
-    <td>{{ latestentry.entry.uploaded|date:"y-m-d H:i:s" }}</td>
-    <td>{{ latestentry.entry.results.0 }}</td>
-    <td>{{ latestentry.entry.results.1 }}</td>
-    <td>{{ latestentry.entry.results.2 }}</td>
+    <td>
+      <a href="{{ latestentry.entry.get_absolute_url }}">
+        {{ latestentry.entry.uploaded|date:"Y-m-d H:i:s" }}
+      </a>
+    </td>
+    <td>{{ latestentry.results.0 }}</td>
+    <td>{{ latestentry.results.1 }}</td>
+    <td>{{ latestentry.results.2 }}</td>
   </tr>
   {% endfor %}
 </table>

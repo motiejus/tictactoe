@@ -66,8 +66,7 @@ class LatestEntry(models.Model):
     user = models.ForeignKey(User)
     entry = models.ForeignKey(Entry)
 
-    @property
-    def results(self):
+    def calc_results(self):
         r1 = Fight.objects.filter(
             x__latestentry=self, o__latestentry__isnull=False
             ).values('result').annotate(cnt=models.Count('result'))

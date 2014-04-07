@@ -17,6 +17,11 @@ class EntryAdmin(admin.ModelAdmin):
             self.message_user(request, "qualification rescheduled for %s." % e)
 
 
+class FightAdmin(admin.ModelAdmin):
+    list_display = ('x', 'o', 'result', 'error')
+    list_filter = ('x__user', 'o__user')
+
+
 admin.site.register(Entry, EntryAdmin)
 admin.site.register(LatestEntry, LatestEntryAdmin)
-admin.site.register(Fight)
+admin.site.register(Fight, FightAdmin)
