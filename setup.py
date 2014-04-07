@@ -1,8 +1,13 @@
+import sys
+
 from setuptools import setup, find_packages
 
 from pip.req import parse_requirements
 
 install_reqs = list(parse_requirements("requirements.txt"))
+
+if sys.version_info < (3, 3):
+    install_reqs.append("mock==1.0.1")
 
 setup(
     name='tictactoe',

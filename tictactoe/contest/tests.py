@@ -1,6 +1,10 @@
 import doctest
 import itertools
-from unittest import mock
+
+try:
+    from unittest import mock
+except ImportError:  # python 3.2 or lower
+    import mock
 
 from django.test import TestCase
 from django.contrib.auth.models import User
