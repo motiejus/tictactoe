@@ -7,7 +7,7 @@ all: env/.setup_done
 test: cover style
 
 env/.setup_done: env/bin/pip requirements.txt requirements_dev.txt
-	$(BIN)/pip install --pre -rrequirements.txt -rrequirements_dev.txt
+	$(BIN)/pip install -rrequirements_dev.txt -e .
 	touch $@
 
 env/bin/pip:
