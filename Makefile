@@ -6,8 +6,10 @@ all: env/.setup_done
 
 test: cover style
 
+DJ=--find-links=https://www.djangoproject.com/m/releases/1.7/Django-1.7b1.tar.gz
+
 env/.setup_done: env/bin/pip requirements.txt requirements_dev.txt
-	$(BIN)/pip install -rrequirements_dev.txt -e .
+	$(BIN)/pip install -e . $(DJ) -rrequirements_dev.txt
 	touch $@
 
 env/bin/pip:
