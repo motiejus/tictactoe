@@ -98,6 +98,8 @@ class Fight(models.Model):
         ('loss', _('loss')),
     )
 
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
     x = models.ForeignKey(Entry, related_name='e1')
     o = models.ForeignKey(Entry, related_name='e2')
 
