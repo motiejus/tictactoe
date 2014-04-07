@@ -16,9 +16,9 @@ def entry(request, id):
 
 
 def entries(request):
-    entries = LatestEntry.objects.all()
+    latestentries = LatestEntry.objects.all()
     return render_to_response(
-        'contest/entries.html', {'entries': entries},
+        'contest/entries.html', {'latestentries': latestentries},
         context_instance=RequestContext(request))
 
 

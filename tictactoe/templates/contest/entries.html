@@ -6,22 +6,23 @@
 {% block content %}
 
 <table border="1" style="border-collapse: collapse" cellpadding="5px" cellspacing="1">
-  <th>
-    <td>User</td>
-    <td>Size (bytes)</td>
-    <td>Uploaded</td>
-    <td>Win</td>
-    <td>Draw</td>
-    <td>Loss</td>
-  </th>
-  {% for entry in entries %}
   <tr>
-    <td>{{ entry.user }}</td>
-    <td>{{ entry.codesize }}</td>
-    <td>{{ entry.uploaded|date:"y-m-d H:i:s" }}</td>
-    <td>{{ entry.results.win }}</td>
-    <td>{{ entry.results.draw }}</td>
-    <td>{{ entry.results.loss }}</td>
+    <th>User</th>
+    <th>Size (bytes)</th>
+    <th>Uploaded</th>
+    <th>Win</th>
+    <th>Draw</th>
+    <th>Loss</td>
+  </tr>
+  {% for latestentry in latestentries %}
+  <tr>
+    <td>{{ latestentry.user }}</td>
+    <td>{{ latestentry.entry.codesize }}</td>
+    <td>{{ latestentry.entry.uploaded|date:"y-m-d H:i:s" }}</td>
+    <td>{{ latestentry.entry.results.0 }}</td>
+    <td>{{ latestentry.entry.results.1 }}</td>
+    <td>{{ latestentry.entry.results.2 }}</td>
+  </tr>
   {% endfor %}
 </table>
 
