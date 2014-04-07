@@ -16,7 +16,7 @@ setup(
     author_email="desired.mta@gmail.com",
     description="Ultimate Tic-Tac-Toe tictactoe front-end",
     long_description=open('README.rst').read(),
-    url="https://github.com/Motiejus/ultimate-tic-tac-toe",
+    url="https://github.com/Motiejus/tictactoe",
     packages=find_packages(),
     install_requires=install_reqs,
     include_package_data=True,
