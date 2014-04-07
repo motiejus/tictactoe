@@ -123,5 +123,6 @@ MAX_CODE_SIZE = 60000
 
 # Celery
 
+CELERY_TASK_SERIALIZER = 'msgpack'
 CELERY_ACCEPT_CONTENT = ['msgpack', 'yaml']
 BROKER_URL = 'redis://'
