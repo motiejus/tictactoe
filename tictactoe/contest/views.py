@@ -16,6 +16,12 @@ def entry(request, id):
         'contest/entry.html', {'entry': entry, 'fights': fights},
         context_instance=RequestContext(request))
 
+def fight(request, id):
+    fight = get_object_or_404(Fight, pk=id)
+    return render_to_response(
+        'contest/fight.html', {'fight': fight},
+        context_instance=RequestContext(request))
+
 
 def entries(request):
     # Piggy-back 'results' to every value

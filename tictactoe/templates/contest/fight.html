@@ -1,0 +1,20 @@
+{% extends "main.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Fight " %} {{ fight.id }}{% endblock %}
+
+{% block content %}
+
+<h2>{% trans "Fight "%} {{ fight.id }}</h2>
+
+<ul>
+  <li>x: <a href="{{ fight.x.get_absolute_url }}">{{ fight.x }}</a></li>
+  <li>o: <a href="{{ fight.o.get_absolute_url }}">{{ fight.o }}</a></li>
+  <li>Created: {{ fight.created|date:"Y-m-d H:i:s" }}</li>
+</ul>
+
+<script type="text/javascript">
+  var gameplay = {{ fight.gameplay }};
+<script>
+
+{% endblock %}

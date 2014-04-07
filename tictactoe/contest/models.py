@@ -152,6 +152,9 @@ class Fight(models.Model):
             fight.result = res
             return fight
 
+    def get_absolute_url(self):
+        return reverse_lazy('tictactoe.contest.views.fight', args=[self.id])
+
     def __str__(self):
         return "<Fight %s vs %s. Result: %s>" % (self.x, self.o, self.result)
 

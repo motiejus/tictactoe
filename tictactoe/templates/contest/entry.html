@@ -4,6 +4,8 @@
 {% block title %}{% trans "Entry " %} {{ entry.id }}{% endblock %}
 
 {% block content %}
+<h2>{% trans "Entry " %} {{ entry.id }}</h2>
+
 <ul>
   <li>User: {{ entry.user }}</li>
   <li>Uploaded: {{ entry.uploaded|date:"Y-m-d H:i:s" }}</li>
@@ -16,12 +18,14 @@
     <th>x</th>
     <th>o</th>
     <th>{% trans "Result" %}</th>
+    <th>{% trans "Gameplay" %}</th>
   </tr>
   {% for fight in fights %}
   <tr>
     <td>{% if fight.x.user != entry.user %}{{ fight.x }}{% else %}this{% endif %}</td>
     <td>{% if fight.o.user != entry.user %}{{ fight.o }}{% else %}this{% endif %}</td>
     <td>{{ fight.result }}</td>
+    <td><a href="{{ fight.get_absolute_url }}">Click here</a></td>
   </tr>
   {% endfor %}
 </table>
