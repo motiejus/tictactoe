@@ -18,7 +18,6 @@ env/bin/pip:
 
 cover: env/.setup_done
 	$(BIN)/coverage run --source='tictactoe' -m tictactoe.manage test --noinput
-	$(BIN)/coverage xml -o .coverage.xml
 	$(BIN)/coverage html -d .htmlcov
 	echo "  See .htmlcov/index.html for coverage report"
 
