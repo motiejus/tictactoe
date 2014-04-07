@@ -1,0 +1,27 @@
+
+table.board {
+  border-collapse: collapse;
+}
+
+table.inner {
+  margin: 5px;
+}
+
+table.outer td.outer {
+  padding: 10px;
+  border: 2px brown solid;
+  vertical-align: middle;
+}
+
+table.inner td.inner {
+  font-size: 1.5em;
+  text-align: center;
+  width: 1.5em;
+  height: 1.5em;
+  border: 1px brown solid;
+}
+
+table.board tr td:last-child { border-right: none; }
+table.board tr td:first-child { border-left: none; }
+table.board tr:first-child td { border-top: none; }
+table.board tr:last-child td { border-bottom: none; }

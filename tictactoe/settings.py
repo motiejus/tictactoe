@@ -25,6 +25,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'jquery',
+
     'tictactoe.tools',
     'tictactoe.contest',
 ) + (DEBUG and DEV_APPS or ())
@@ -83,6 +86,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (os.path.join(APP_DIR, 'static'),)
 STATICFILES_STORAGE = ('django.contrib.staticfiles.'
                        'storage.CachedStaticFilesStorage')
 
