@@ -2,9 +2,7 @@ import sys
 
 from setuptools import setup, find_packages
 
-from pip.req import parse_requirements
-
-install_reqs = [str(ir.req) for ir in parse_requirements("requirements.txt")]
+install_reqs = [r.strip() for r in open("requirements.txt")]
 
 if sys.version_info < (3, 3):
     install_reqs.append("mock==1.0.1")
