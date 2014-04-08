@@ -11,7 +11,7 @@ from .models import Entry, LatestEntry, Fight
 
 def entry(request, id):
     entry = get_object_or_404(Entry, pk=id)
-    fights = Fight.objects.filter(Q(x=entry) | Q(o=entry)).all()
+    fights = Fight.objects.filter(Q(x=entry) | Q(o=entry)).order_by('id').all()
     return render_to_response(
         'contest/entry.html', {'entry': entry, 'fights': fights},
         context_instance=RequestContext(request))
