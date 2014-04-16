@@ -16,6 +16,7 @@ def entry(request, id):
         'contest/entry.html', {'entry': entry, 'fights': fights},
         context_instance=RequestContext(request))
 
+
 def entries(request):
     entries = Entry.own(request.user).all()
     return render_to_response(
