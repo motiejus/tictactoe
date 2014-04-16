@@ -17,11 +17,7 @@
 {% endif %}
 </ul>
 
-<table class="board">
-  <tr><td></td><td></td><td></td></tr>
-  <tr><td></td><td></td><td></td></tr>
-  <tr><td></td><td></td><td></td></tr>
-</table>
+<div id="board_here"></div>
 
 <button id="reset">&lt;&lt;</button>
 <button id="backward">&lt;</button>
@@ -39,10 +35,15 @@
 {% block end_body %}
 {{ block.super }}
 <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
-<script type="text/javascript">
-  var gameplay = {{ fight.gameplay }};
-</script>
 <script type="text/javascript" src="{% static "js/fight.js" %}"></script>
+<script type="text/javascript">
+    var gameplay = {{ fight.gameplay }};
+    var board = new Board(gameplay, $("#board_here"));
+    $("#reset").click(function() { board.board_reset() });
+    $("#forward").click(function() { board.forward() });
+    $("#backward").click(function() { board.backward() });
+    $("#fastforward").click(function() { board.fastforward() });
+</script>
 </script>
 
 {% endblock %}
