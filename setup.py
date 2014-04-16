@@ -1,8 +1,10 @@
+import os
 import sys
 
 from setuptools import setup, find_packages
 
-install_reqs = [r.strip() for r in open("requirements.txt")]
+HERE = os.path.dirname(__file__)
+install_reqs = [r.strip() for r in open(os.path.join(HERE, "requirements.txt"))]
 
 if sys.version_info < (3, 3):
     install_reqs.append("mock==1.0.1")
