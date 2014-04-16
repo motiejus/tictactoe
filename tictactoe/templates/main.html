@@ -25,6 +25,14 @@
         </li>
        <li>
          <a href="{% url "tictactoe.contest.views.entries" %}">
+           {% if request.user.is_superuser %}
+          {% trans "All entries" %}
+           {% else %}
+          {% trans "My entries" %}
+          {% endif %}
+        </a>
+       <li>
+         <a href="{% url "tictactoe.contest.views.ranking" %}">
           {% trans "Ranking table" %}
         </a>
         </li>

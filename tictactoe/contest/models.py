@@ -60,6 +60,7 @@ class Entry(models.Model):
 
     class Meta:
         verbose_name_plural = 'Entries'
+        ordering = '-uploaded',
 
 
 class LatestEntry(models.Model):

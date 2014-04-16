@@ -16,6 +16,12 @@ def entry(request, id):
         'contest/entry.html', {'entry': entry, 'fights': fights},
         context_instance=RequestContext(request))
 
+def entries(request):
+    entries = Entry.own(request.user).all()
+    return render_to_response(
+        'contest/entries.html', {'entries': entries},
+        context_instance=RequestContext(request))
+
 
 def fight(request, id):
     fight = get_object_or_404(Fight, pk=id)
@@ -24,7 +30,7 @@ def fight(request, id):
         context_instance=RequestContext(request))
 
 
-def entries(request):
+def ranking(request):
     # Piggy-back 'results' to every value
     latest = LatestEntry.objects.all()
     res = [e.calc_results() for e in latest]
@@ -32,7 +38,7 @@ def entries(request):
     latest2 = sorted(latest, key=lambda x: x.results[0])
 
     return render_to_response(
-        'contest/entries.html', {'latestentries': latest2},
+        'contest/ranking.html', {'latestentries': latest2},
         context_instance=RequestContext(request))
 
 

@@ -11,8 +11,9 @@ urlpatterns = patterns(
         name='rules'),
 
     url(r'^upload$', 'tictactoe.contest.views.upload'),
-    url(r'^entry/(?P<id>\d+)$', 'tictactoe.contest.views.entry'),
+    url(r'^ranking$', 'tictactoe.contest.views.ranking'),
     url(r'^entries$', 'tictactoe.contest.views.entries'),
+    url(r'^entry/(?P<id>\d+)$', 'tictactoe.contest.views.entry'),
     url(r'^fight/(?P<id>\d+)$', 'tictactoe.contest.views.fight'),
 
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
