@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Rules to become the Gamesmaster" %}{% endblock %}
+
+{% block content %}
+
+<h1>What are the rules?</h1>
+
+We have a “big” tic-tac-toe board with a “small” tic-tac-toe board in each
+cell. Your goal is to win the big board by winning small ones.
+
+You may only play in the big field that corresponds to the last small field
+your opponent played. When you are sent to a field that is already
+won/lost/draw, you can place the move wherever you like.
+
+<h1>What should I deliver?</h1>
+
+You write a Lua function that takes 4 arguments (xo, board, row, col) and
+returns the coordinates of where to place your move. An example solution
+(dumb_player.lua, your first opponent) and more information about the API is
+available at the project website.
+
+<h1>What if I cheat?</h1>
+
+Since all the activities are logged, and the contest is quite small, we’ll most
+likely discover your cheating. This will, without exception, spell misery for
+you, your family, your friends, and your pets, from the moment of your
+discovery until the moment of your demise. In short: don’t cheat. You don’t
+want to cheat.  However, if you feel like doing systems penetration or enjoy
+hacking systems, we have something for you too!
+
+If you manage to get out of the sandbox, irrecoverably bring down the system,
+read others’ code or influence the result unfairly, we’ll award you with
+another Spil Games cap. Since this is not meant to be a security contest (the
+prizes would be much better if it were), a hostile environment is available for
+scratching your itch if you have one, and earning an extra cap for doing so.
+The environment is here: http://hostile.tictactoe.spilgames.com/
+
+If you achieve this successfully you qualify for a ‘penetration prize’. Just
+make sure you report your achievement and your method to
+motiejus.jakstys@spilgames.com.
+
+Be friendly to others, and good luck coding! :-)
+
+{% endblock content %}

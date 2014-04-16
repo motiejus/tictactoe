@@ -5,7 +5,10 @@ from django.contrib import admin
 
 urlpatterns = patterns(
     '',
-    url(r'^$', TemplateView.as_view(template_name='contest/index.html')),
+    url(r'^$', TemplateView.as_view(template_name='contest/index.html'),
+        name='index'),
+    url(r'rules$', TemplateView.as_view(template_name='contest/rules.html'),
+        name='rules'),
 
     url(r'^upload$', 'tictactoe.contest.views.upload'),
     url(r'^entry/(?P<id>\d+)$', 'tictactoe.contest.views.entry'),

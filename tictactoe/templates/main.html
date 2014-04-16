@@ -5,8 +5,17 @@
 
 {% block body %}
 
-<div id="top_wrapper">
+<div id="top_wrapper" style="width: 50%; margin-left: auto; margin-right: auto;">
   <div id="header">
+
+    {% if request.user.is_anonymous %}
+      You are not logged in.
+      <a href="{% url "login" %}">{% trans "Login" %}</a>.
+    {% else %}
+      Hello, {% firstof user.first_name user.username %}.
+      <a href="{% url "logout" %}">{% trans "Logout" %}</a>
+    {% endif %}
+
      <ul id="navbar">
        <li><a href="/">{% trans "Home" %}</a></li>
        <li>
@@ -19,11 +28,9 @@
           {% trans "Ranking table" %}
         </a>
         </li>
-       {% if request.user.is_anonymous %}
-         <li><a href="{% url "login" %}">{% trans "Login" %}</a></li>
-       {% else %}
-         <li><a href="{% url "logout" %}">{% trans "Logout" %}</a></li>
-       {% endif %}
+       <li>
+         <a href="{% url "rules" %}">{% trans "Rules" %}</a>
+        </li>
      </ul>
   </div>
 
@@ -42,6 +49,6 @@
   </div>
 
   {# Haha there is no footer #}
-</div>
+</div><!-- /top_wrapper -->
 
 {% endblock body %}
