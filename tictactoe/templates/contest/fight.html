@@ -39,10 +39,10 @@
 <script type="text/javascript">
     var gameplay = {{ fight.gameplay }};
     var board = new Board(gameplay, $("#board_here"));
-    $("#reset").click(function() { board.board_reset() });
-    $("#forward").click(function() { board.forward() });
-    $("#backward").click(function() { board.backward() });
-    $("#fastforward").click(function() { board.fastforward() });
+    $("#reset").click(board.board_reset.bind(board));
+    $("#forward").click(board.forward.bind(board));
+    $("#backward").click(board.backward.bind(board));
+    $("#fastforward").click(board.fastforward.bind(board));
 </script>
 </script>
 
