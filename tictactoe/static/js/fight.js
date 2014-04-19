@@ -10,6 +10,9 @@
     ).addClass("board");
 
     var Board = function (i_gameplay, rootnode) {
+        this.reset_callbacks = [];
+        this.forward_callbacks = [];
+        this.backward_callbacks = [];
         this.gameplay = i_gameplay;
         this.board = board_init(rootnode);
         this.state_reset();
@@ -18,10 +21,10 @@
 
     Board.prototype.put = function (what, n) {
         var stupidlist = num_to_coords(n),
-            x1 = stupidlist[0],
-            y1 = stupidlist[1],
-            x2 = stupidlist[2],
-            y2 = stupidlist[3];
+            x1 = stupidlist[0] - 1,
+            y1 = stupidlist[1] - 1,
+            x2 = stupidlist[2] - 1,
+            y2 = stupidlist[3] - 1;
         this.board.find("tr.outer").eq(x1).
             find("td.outer").eq(y1).
             find("tr.inner").eq(x2).
@@ -35,6 +38,7 @@
 
     Board.prototype.board_reset = function () {
         this.state_reset();
+        this.reset_callbacks.forEach(function (callback) { callback(); });
         this.board.find("td.inner").text("");
     };
 
@@ -46,13 +50,20 @@
     Board.prototype.forward = function () {
         if (this.current_pos >= this.gameplay.length - 1)
             return;
-        this.put(this.flip(), this.gameplay[++this.current_pos]);
+        var xo = this.flip(),
+            pos = this.gameplay[++this.current_pos];
+
+        this.forward_callbacks.forEach(function (callback) {
+            callback(xo, num_to_coords(pos))
+        });
+        this.put(xo, pos);
     };
 
     Board.prototype.backward = function () {
         if (this.current_pos < 0)
             return;
         this.flip();
+        this.backward_callbacks.forEach(function (callback) { callback(); });
         this.put("", this.gameplay[this.current_pos--]);
     };
 
@@ -71,7 +82,7 @@
             y1 = Math.floor(colm / 3),
             x2 = rowm % 3,
             y2 = colm % 3;
-        return [x1, y1, x2, y2];
+        return [x1+1, y1+1, x2+1, y2+1];
     }
 
     function board_init() {
