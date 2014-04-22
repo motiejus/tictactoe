@@ -1,8 +1,5 @@
-{# This template is inherited by everything but admin #}
 {% load i18n %}
 {% load staticfiles %}
-
-{% get_current_language as LANGUAGE_CODE %}
 
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -12,8 +9,11 @@
     <title>{% block title %}Tic Tac Toe Challenge{% endblock %}</title>
 {% endblock %}
 {% block end_head %}{% endblock %}
-<link rel="stylesheet" href="{% static "css/main.css" %}">
 <meta charset="utf8">
+
+<link href="{% static "css/main.css" %}" rel="stylesheet">
+<link href="{% static "bootstrap/css/bootstrap.min.css" %}" media="screen" rel="stylesheet">
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
 </head>
 <body>
 <script type="text/javascript"/>
