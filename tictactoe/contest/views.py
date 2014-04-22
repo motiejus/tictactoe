@@ -3,6 +3,7 @@ from django.template import RequestContext
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import Q
 
 from .forms import CodeUploadForm
@@ -17,10 +18,15 @@ def entry(request, id):
         context_instance=RequestContext(request))
 
 
-def entries(request):
-    entries = Entry.own(request.user).all()
+def entries(request, uid=None):
+    if uid is None:
+        entries = Entry.objects
+        user = None
+    else:
+        entries = Entry.objects.filter(user__id=uid)
+        user = User.objects.get(id=uid)
     return render_to_response(
-        'contest/entries.html', {'entries': entries},
+        'contest/entries.html', {'entries': entries.all(), 'user': user},
         context_instance=RequestContext(request))
 
 

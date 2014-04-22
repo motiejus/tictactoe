@@ -12,7 +12,7 @@
       You are not logged in.
       <a href="{% url "login" %}">{% trans "Login" %}</a>.
     {% else %}
-      Hello, {% firstof user.first_name user.username %}.
+      Hello, {% firstof request.user.first_name user.username %}.
       <a href="{% url "logout" %}">{% trans "Logout" %}</a>
     {% endif %}
 
@@ -23,13 +23,16 @@
           {% trans "Upload" %}
         </a>
         </li>
+       {% if not request.user.is_anonymous %}
+       <li>
+         <a href="{% url "tictactoe.contest.views.entries" uid=request.user.id %}">
+          {% trans "My entries" %}
+        </a>
+       </li>
+       {% endif %}
        <li>
          <a href="{% url "tictactoe.contest.views.entries" %}">
-           {% if request.user.is_superuser %}
           {% trans "All entries" %}
-           {% else %}
-          {% trans "My entries" %}
-          {% endif %}
         </a>
        <li>
          <a href="{% url "tictactoe.contest.views.ranking" %}">

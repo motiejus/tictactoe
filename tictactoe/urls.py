@@ -13,6 +13,7 @@ urlpatterns = patterns(
     url(r'^upload$', 'tictactoe.contest.views.upload'),
     url(r'^ranking$', 'tictactoe.contest.views.ranking'),
     url(r'^entries$', 'tictactoe.contest.views.entries'),
+    url(r'^entries/(?P<uid>\d+)$', 'tictactoe.contest.views.entries'),
     url(r'^entry/(?P<id>\d+)$', 'tictactoe.contest.views.entry'),
     url(r'^fight/(?P<id>\d+)$', 'tictactoe.contest.views.fight'),
 
