@@ -16,9 +16,9 @@
 <table>
   <tr>
     <th>id</th>
-    <th>x</th>
-    <th>o</th>
-    <th>{% trans "Result (gameplay)" %}</th>
+    <th>Opponent x</th>
+    <th>Opponent o</th>
+    <th>{% trans "Result" %}</th>
   </tr>
   {% for fight in fights %}
   <tr>
@@ -26,18 +26,20 @@
     <td>
       {% if fight.x.user != entry.user %}
         <a href="{{ fight.x.get_absolute_url }}">{{ fight.x }}</a>
-      {% else %}
-        this
       {% endif %}
     </td>
     <td>
       {% if fight.o.user != entry.user %}
         <a href="{{ fight.o.get_absolute_url }}">{{ fight.o }}</a>
-      {% else %}
-        this
       {% endif %}
     </td>
-    <td><a href="{{ fight.get_absolute_url }}">{{ fight.result }}</a></td>
+    <td>
+      {% if fight.x.user == entry.user %}
+        <a href="{{ fight.get_absolute_url }}">{{ fight.result_of_x }}</a>
+      {% else %}
+        <a href="{{ fight.get_absolute_url }}">{{ fight.result_of_o }}</a>
+      {% endif %}
+    </td>
   </tr>
   {% endfor %}
 </table>

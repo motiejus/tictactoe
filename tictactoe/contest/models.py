@@ -126,6 +126,14 @@ class Fight(models.Model):
         help_text=_("Fight result of x (e1) versus o (e2). Relative to e1.")
     )
 
+    def result_of_x(self):
+        return self.result
+
+    def result_of_o(self):
+        if self.result == 'draw':
+            return 'draw'
+        return self.result == 'loss' and 'win' or 'win'
+
     class Meta:
         index_together = (
             ('x', 'result'),
