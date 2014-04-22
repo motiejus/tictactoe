@@ -5,19 +5,24 @@
 
 {% block body %}
 
-<div id="top_wrapper">
-  <div id="header">
+<div id="top_wrapper" class="wrapper">
 
-    {% if request.user.is_anonymous %}
-      You are not logged in.
-      <a href="{% url "login" %}">{% trans "Login" %}</a>.
-    {% else %}
-      Hello, {% firstof request.user.first_name request.user.username %}.
-      <a href="{% url "logout" %}">{% trans "Logout" %}</a>
-    {% endif %}
+  <div class="top-bar">
+      <div class="login-box">
+        {% if request.user.is_anonymous %}
+          <p>You are not logged in.</p>
+          <a class="btn btn-sm btn-default" href="{% url "login" %}">{% trans "Login" %}</a>
+        {% else %}
+          <p>Hello, <span>{% firstof user.first_name user.username %}</span>.</p>
+          <a class="btn btn-sm btn-default" href="{% url "logout" %}">{% trans "Logout" %}</a>
+        {% endif %}
+      </div>
+  </div>
 
-     <ul id="navbar">
-       <li><a href="/">{% trans "Home" %}</a></li>
+  <div id="header" class="header-wrapper">
+    <a href="/" class="menu-heading"><img src="http://www.spilgames.com/wp-content/themes/spilgames/img/logo.png" alt="logo"></a>
+     <ul class="menu" id="navbar">
+       <li><a class="selected" href="/">{% trans "Home" %}</a></li>
        <li>
          <a href="{% url "tictactoe.contest.views.upload" %}">
           {% trans "Upload" %}
@@ -45,7 +50,7 @@
      </ul>
   </div>
 
-  <div id="content">
+  <div id="content" class="content-wrapper">
     {% if messages %}
     <ul class="messages">
       {% for message in messages %}
