@@ -8,7 +8,7 @@ HOSTPORT ?= 127.0.0.1:8000
 
 test: cover style
 
-DJ=--find-links=https://www.djangoproject.com/m/releases/1.7/Django-1.7b2.tar.gz
+DJ=--find-links=https://www.djangoproject.com/m/releases/1.7/Django-1.7b1.tar.gz
 
 setup: env/.env_done tictactoe/tictactoe.cfg
 
