@@ -1,6 +1,5 @@
 {% load i18n %}
 {% load staticfiles %}
-{% load bootstrap3 %}
 
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -11,11 +10,12 @@
 {% endblock %}
 {% block end_head %}{% endblock %}
 <meta charset="utf8">
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+
+
+<link href="{% static "bootstrap/css/bootstrap.min.css" %}" media="screen" rel="stylesheet">
+<script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
 </head>
 <body>
-{% bootstrap_messages %}
 <script type="text/javascript"/>
 window.tictactoe = {};
 window.tictactoe.static_url = '{{ STATIC_URL }}';
