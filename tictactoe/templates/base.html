@@ -1,8 +1,6 @@
-{# This template is inherited by everything but admin #}
 {% load i18n %}
 {% load staticfiles %}
-
-{% get_current_language as LANGUAGE_CODE %}
+{% load bootstrap3 %}
 
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
@@ -13,8 +11,11 @@
 {% endblock %}
 {% block end_head %}{% endblock %}
 <meta charset="utf8">
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 </head>
 <body>
+{% bootstrap_messages %}
 <script type="text/javascript"/>
 window.tictactoe = {};
 window.tictactoe.static_url = '{{ STATIC_URL }}';

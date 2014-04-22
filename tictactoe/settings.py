@@ -27,6 +27,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'jquery',
+    'bootstrap3',
 
     'tictactoe.tools',
     'tictactoe.contest',
