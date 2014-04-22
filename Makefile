@@ -4,6 +4,8 @@ BIN ?= env/bin
 
 all: setup
 
+HOSTPORT ?= 127.0.0.1:8000
+
 test: cover style
 
 DJ=--find-links=https://www.djangoproject.com/m/releases/1.7/Django-1.7b2.tar.gz
@@ -14,7 +16,7 @@ tictactoe/tictactoe.cfg:
 	cp tictactoe/tictactoe.example.cfg $<
 
 go: tictactoe/tictactoe.cfg env/.env_done
-	$(BIN)/tictactoe runserver 0.0.0.0:8000
+	$(BIN)/tictactoe runserver $(HOSTPORT)
 
 env/.env_done: env/bin/pip requirements.txt requirements_dev.txt
 	$(BIN)/pip install -e . $(DJ) -rrequirements_dev.txt
