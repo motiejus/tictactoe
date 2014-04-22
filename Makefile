@@ -8,10 +8,10 @@ test: cover style
 
 DJ=--find-links=https://www.djangoproject.com/m/releases/1.7/Django-1.7b1.tar.gz
 
-setup: tictactoe/tictactoe.cfg
+setup: env/.env_done tictactoe/tictactoe.cfg
 
 tictactoe/tictactoe.cfg:
-	cp tictactoe/tictactoe.example.cfg $@
+	cp tictactoe/tictactoe.example.cfg $<
 
 go: tictactoe/tictactoe.cfg env/.env_done
 	$(BIN)/tictactoe runserver 0.0.0.0:8000
