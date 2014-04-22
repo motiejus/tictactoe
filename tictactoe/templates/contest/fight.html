@@ -19,13 +19,13 @@
 
 <div>
 <div style="width: 70%; float: left;">
-  <div id="board_here"></div>
+  <div class="board_here"></div>
   <button id="reset">&lt;&lt;</button>
   <button id="backward">&lt;</button>
   <button id="forward">&gt;</button>
   <button id="fastforward">&gt;&gt;</button>
 </div>
-<div id="status_here" style="width: 30%; float: left;"></div>
+<div class="status_here" style="width: 30%; float: left;"></div>
 <div style="clear: both"></div>
 </div>
 
@@ -44,7 +44,7 @@
 <script type="text/javascript">
     var gameplay = {{ fight.gameplay }};
     var error = "{{ fight.error|escapejs }}";
-    var board = new Board(gameplay, $("#board_here"), $("#status_here"));
+    var board = new Board(gameplay, error, $(".board_here"), $(".status_here"));
     $("#reset").click(board.board_reset.bind(board));
     $("#forward").click(board.forward.bind(board));
     $("#backward").click(board.backward.bind(board));

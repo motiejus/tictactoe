@@ -9,13 +9,11 @@
         </table>'
     ).addClass("board");
 
-    var Board = function (i_gameplay, boardnode, statusnode) {
-        this.reset_callbacks = [];
-        this.forward_callbacks = [];
-        this.backward_callbacks = [];
-        this.statusnode = statusnode;
-        this.gameplay = i_gameplay;
+    var Board = function (gameplay, error, boardnode, statusnode) {
+        this.error = error;
+        this.gameplay = gameplay;
         this.board = board_init(boardnode);
+        this.statusnode = statusnode;
         this.state_reset();
         boardnode.append(this.board);
     };
@@ -52,12 +50,18 @@
         if (this.current_pos >= this.gameplay.length - 1)
             return;
         var xo = this.flip(),
-            pos = this.gameplay[++this.current_pos];
+            pos = this.gameplay[++this.current_pos],
+            t = "", t_class = "";
 
-        var t = this.xo + " placed on (" + pos.toString() + ")";
-        this.statusnode.append($("<div/>").html(t));
-
-        this.put(xo, pos);
+        if (pos == 0) {
+            t = this.xo + " errorred: " + this.error;
+            t_class = "error";
+        } else {
+            t = this.xo + " placed on (" + num_to_coords(pos).toString() + ")";
+            t_class = "ok";
+            this.put(xo, pos);
+        }
+        this.statusnode.append($("<div/>").addClass(t_class).html(t));
     };
 
     Board.prototype.backward = function () {

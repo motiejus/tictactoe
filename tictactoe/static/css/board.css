@@ -1,4 +1,3 @@
-
 table.board {
   border-collapse: collapse;
 }
@@ -20,6 +19,9 @@ table.inner td.inner {
   height: 1.5em;
   border: 1px brown solid;
 }
+
+div.status_here div.ok { color: green; }
+div.status_here div.error { color: red; }
 
 table.board tr td:last-child { border-right: none; }
 table.board tr td:first-child { border-left: none; }
