@@ -13,40 +13,51 @@
           <p>You are not logged in.</p>
           <a class="btn btn-sm btn-default" href="{% url "login" %}">{% trans "Login" %}</a>
         {% else %}
-          <p>Hello, <span>{% firstof user.first_name user.username %}</span>.</p>
+          <p>Hello, <span>{% firstof request.user.first_name request.user.username %}</span>.</p>
           <a class="btn btn-sm btn-default" href="{% url "logout" %}">{% trans "Logout" %}</a>
         {% endif %}
       </div>
   </div>
 
   <div id="header" class="header-wrapper">
-    <a href="/" class="menu-heading"><img src="http://www.spilgames.com/wp-content/themes/spilgames/img/logo.png" alt="logo"></a>
+    <a href="http://spilgames.com/" class="menu-heading"><img src="{% static "img/spilgames.png" %}" alt="Spil Games Logo"></a>
      <ul class="menu" id="navbar">
-       <li><a class="selected" href="/">{% trans "Home" %}</a></li>
+
        <li>
-         <a href="{% url "tictactoe.contest.views.upload" %}">
+         <a class="{% block home_selected %}{% endblock %}" href="/">
+           {% trans "Home" %}
+         </a>
+       </li>
+
+       <li>
+         <a class="{% block upload_selected %}{% endblock %}" href="{% url "tictactoe.contest.views.upload" %}">
           {% trans "Upload" %}
-        </a>
-        </li>
+         </a>
+       </li>
+
        {% if not request.user.is_anonymous %}
        <li>
-         <a href="{% url "tictactoe.contest.views.entries" uid=request.user.id %}">
+         <a class="{% block user_entries_selected %}{% endblock %}" href="{% url "tictactoe.contest.views.entries" uid=request.user.id %}">
           {% trans "My entries" %}
         </a>
        </li>
        {% endif %}
+
        <li>
-         <a href="{% url "tictactoe.contest.views.entries" %}">
+         <a class="{% block all_entries_selected %}{% endblock %}" href="{% url "tictactoe.contest.views.entries" %}">
           {% trans "All entries" %}
-        </a>
+         </a>
+      </li>
+
        <li>
-         <a href="{% url "tictactoe.contest.views.ranking" %}">
+         <a class="{% block ranking_selected %}{% endblock %}" href="{% url "tictactoe.contest.views.ranking" %}">
           {% trans "Ranking table" %}
-        </a>
-        </li>
+         </a>
+       </li>
+
        <li>
-         <a href="{% url "rules" %}">{% trans "Rules" %}</a>
-        </li>
+         <a class="{% block rules_selected %}{% endblock %}" href="{% url "rules" %}">{% trans "Rules" %}</a>
+       </li>
      </ul>
   </div>
 

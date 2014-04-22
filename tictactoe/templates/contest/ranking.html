@@ -1,6 +1,8 @@
 {% extends "main.html" %}
 {% load i18n %}
 
+{% block ranking_selected %}selected{% endblock %}
+
 {% block title %}{% trans "Entry list" %}{% endblock %}
 
 {% block content %}
@@ -18,7 +20,14 @@
   </thead>
   {% for latestentry in latestentries %}
   <tr>
-    <td>{{ latestentry.user }}</td>
+    <td>
+      {% if latestentry.user.first_name %}
+        {{ latestentry.user.first_name }}
+        {{ latestentry.user.last_name }}
+      {% else %}
+        {{ latestentry.user.username }}
+      {% endif %}
+    </td>
     <td>{{ latestentry.entry.codesize|filesizeformat }}</td>
     <td>
       <a href="{{ latestentry.entry.get_absolute_url }}">
@@ -32,4 +41,4 @@
   {% endfor %}
 </table>
 
-{% endblock %}
+{% endblock content %}
