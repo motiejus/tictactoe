@@ -13,13 +13,13 @@
 <table>
   <tr>
     <th>ID</th>
-    <th>Cide size</th>
+    <th>Code size</th>
     <th>Uploaded time</th>
   </tr>
   {% for entry in entries %}
   <tr>
     <td><a href="{{ entry.get_absolute_url }}">{{ entry.id }}</a>
-    <td>{{ entry.codesize }}</td>
+    <td>{{ entry.codesize|filesizeformat }}</td>
     <td>{{ entry.uploaded|date:"Y-m-d H:i:s" }}</td>
   </tr>
   {% endfor %}
