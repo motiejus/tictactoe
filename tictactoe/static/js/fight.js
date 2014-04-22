@@ -9,14 +9,15 @@
         </table>'
     ).addClass("board");
 
-    var Board = function (i_gameplay, rootnode) {
+    var Board = function (i_gameplay, boardnode, statusnode) {
         this.reset_callbacks = [];
         this.forward_callbacks = [];
         this.backward_callbacks = [];
+        this.statusnode = statusnode;
         this.gameplay = i_gameplay;
-        this.board = board_init(rootnode);
+        this.board = board_init(boardnode);
         this.state_reset();
-        rootnode.append(this.board);
+        boardnode.append(this.board);
     };
 
     Board.prototype.put = function (what, n) {
@@ -38,7 +39,7 @@
 
     Board.prototype.board_reset = function () {
         this.state_reset();
-        this.reset_callbacks.forEach(function (callback) { callback(); });
+        this.statusnode.children().remove();
         this.board.find("td.inner").text("");
     };
 
@@ -53,9 +54,9 @@
         var xo = this.flip(),
             pos = this.gameplay[++this.current_pos];
 
-        this.forward_callbacks.forEach(function (callback) {
-            callback(xo, num_to_coords(pos))
-        });
+        var t = this.xo + " placed on (" + pos.toString() + ")";
+        this.statusnode.append($("<div/>").html(t));
+
         this.put(xo, pos);
     };
 
@@ -63,7 +64,7 @@
         if (this.current_pos < 0)
             return;
         this.flip();
-        this.backward_callbacks.forEach(function (callback) { callback(); });
+        this.statusnode.children().last("<div>").remove();
         this.put("", this.gameplay[this.current_pos--]);
     };
 
