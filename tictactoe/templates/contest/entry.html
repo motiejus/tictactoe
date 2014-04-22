@@ -9,7 +9,7 @@
 <ul>
   <li>User: {{ entry.user }}</li>
   <li>Uploaded: {{ entry.uploaded|date:"Y-m-d H:i:s" }}</li>
-  <li>Code size: {{ entry.codesize }}b</li>
+  <li>Code size: {{ entry.codesize|filesizeformat }}</li>
 </ul>
 
 <h2>{% trans "All fights" %}</h2>
@@ -44,8 +44,8 @@
   {% endfor %}
 </table>
 
-{% if request.user.is_superuser or request.user == entry.user %}
-<h2>{% trans "Code" %} ({{ entry.codesize }}b)</h2>
+{% if request.user.is_superuser or request.user == entry.user or entry.user.username == "Qualification-Bot" %}
+<h2>{% trans "Code" %} ({{ entry.codesize|filesizeformat }})</h2>
 <pre>
 {{ entry.code }}
 </pre>

@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.core.serializers import serialize
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import filesizeformat
 from django.conf import settings
 
 from tictactoe.tools.validators import ByteLengthValidator
@@ -36,7 +37,7 @@ class Entry(models.Model):
         return reverse_lazy('tictactoe.contest.views.entry', args=[self.id])
 
     def __str__(self):
-        return "<Entry by %s (%d bytes)>" % (self.user, self.codesize)
+        return "<Entry by %s (%s)>" % (self.user, filesizeformat(self.codesize))
 
     def add_latest(self):
         """After qualifying, make it LatestEntry of this user"""
