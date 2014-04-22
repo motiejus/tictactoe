@@ -8,6 +8,6 @@
   <form method="POST" action="{{ request.get_full_path }}">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="{% trans "Submit" %}" />
+    <input class="btn btn-sm btn-default" type="submit" value="{% trans "Submit" %}" />
   </form>
 {% endblock %}
