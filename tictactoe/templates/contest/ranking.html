@@ -5,15 +5,17 @@
 
 {% block content %}
 
-<table border="1" style="border-collapse: collapse" cellpadding="5px" cellspacing="1">
-  <tr>
-    <th>{% trans "User" %}</th>
-    <th>{% trans "Entry Size" %}</th>
-    <th>{% trans "Uploaded" %}</th>
-    <th>{% trans "Wins" %}</th>
-    <th>{% trans "Draws" %}</th>
-    <th>{% trans "Losses" %}</th>
-  </tr>
+<table class="table" border="1" style="border-collapse: collapse" cellpadding="5px" cellspacing="1">
+  <thead>
+    <tr>
+      <th>{% trans "User" %}</th>
+      <th>{% trans "Entry Size" %}</th>
+      <th>{% trans "Uploaded" %}</th>
+      <th>{% trans "Wins" %}</th>
+      <th>{% trans "Draws" %}</th>
+      <th>{% trans "Losses" %}</th>
+    </tr>
+  </thead>
   {% for latestentry in latestentries %}
   <tr>
     <td>{{ latestentry.user }}</td>

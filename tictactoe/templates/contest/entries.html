@@ -10,13 +10,15 @@
   <h2>{% trans "All entries" %}</h2>
 {% endif %}
 
-<table>
-  <tr>
-    <th>ID</th>
-    <th>User</th>
-    <th>Code size</th>
-    <th>Uploaded time</th>
-  </tr>
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>User</th>
+      <th>Code size</th>
+      <th>Uploaded time</th>
+    </tr>
+  </thead>
   {% for entry in entries %}
   <tr>
     <td><a href="{{ entry.get_absolute_url }}">{{ entry.id }}</a>

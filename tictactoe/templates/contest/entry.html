@@ -13,15 +13,22 @@
 </ul>
 
 <h2>{% trans "All fights" %}</h2>
-<table>
-  <tr>
-    <th>id</th>
-    <th>Opponent x</th>
-    <th>Opponent o</th>
-    <th>{% trans "Result" %}</th>
-  </tr>
+<table class="table">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Opponent x</th>
+      <th>Opponent o</th>
+      <th>{% trans "Result" %}</th>
+    </tr>
+  </thead>
   {% for fight in fights %}
-  <tr>
+
+  {% if fight.x.user == entry.user %}   <tr class="{{ fight.result_of_x }}">
+      {% else %}
+        <tr class="{{ fight.result_of_o }}">
+      {% endif %}
+
     <td>{{ fight.id }}</td>
     <td>
       {% if fight.x.user != entry.user %}
