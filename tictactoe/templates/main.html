@@ -12,7 +12,7 @@
       You are not logged in.
       <a href="{% url "login" %}">{% trans "Login" %}</a>.
     {% else %}
-      Hello, {% firstof request.user.first_name user.username %}.
+      Hello, {% firstof request.user.first_name request.user.username %}.
       <a href="{% url "logout" %}">{% trans "Logout" %}</a>
     {% endif %}
 
