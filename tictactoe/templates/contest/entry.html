@@ -44,11 +44,13 @@
   {% endfor %}
 </table>
 
-{% if request.user.is_superuser or request.user == entry.user or entry.user.username == "Qualification-Bot" %}
 <h2>{% trans "Code" %} ({{ entry.codesize|filesizeformat }})</h2>
+{% if request.user.is_superuser or request.user == entry.user or entry.user.username == "Qualification-Bot" %}
 <pre>
 {{ entry.code }}
 </pre>
+{% else %}
+You have to be logged in as admin to see the code.
 {% endif %}
 
 {% endblock %}
