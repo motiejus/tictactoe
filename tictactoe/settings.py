@@ -92,8 +92,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(APP_DIR, 'static'),)
-STATICFILES_STORAGE = ('django.contrib.staticfiles.'
-                       'storage.CachedStaticFilesStorage')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
