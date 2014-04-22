@@ -61,10 +61,14 @@ ROOT_URLCONF = 'tictactoe.urls'
 
 WSGI_APPLICATION = 'tictactoe.wsgi.application'
 
+_DBNAME, _DBENGINE = config.get('db', 'name'), config.get('db', 'engine')
+if DEBUG and "sqlite" in _DBENGINE and "/" not in _DBNAME:
+    _DBNAME = os.path.join(BASE_DIR, _DBNAME)
+
 DATABASES = {
     'default': {
-        'ENGINE': config.get('db', 'engine'),
-        'NAME': config.get('db', 'name'),
+        'ENGINE': _DBENGINE,
+        'NAME': _DBNAME,
         'USER': config.get('db', 'user'),
         'PASSWORD': config.get('db', 'password'),
     }
