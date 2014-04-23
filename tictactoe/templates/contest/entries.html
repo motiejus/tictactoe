@@ -25,14 +25,14 @@
   </thead>
   {% for entry in entries %}
   <tr>
-    <td><a href="{{ entry.get_absolute_url }}">{{ entry.id }}</a>
+    <td>{{ entry.id }}</a>
       <td>
          <a href="{% url "tictactoe.contest.views.entries" uid=entry.user.id %}">
            {{ entry.user }}
          </a>
        </td>
     <td>{{ entry.codesize|filesizeformat }}</td>
-    <td>{{ entry.uploaded|date:"Y-m-d H:i:s" }}</td>
+    <td><a href="{{ entry.get_absolute_url }}">{{ entry.uploaded|date:"Y-m-d H:i:s" }}</a></td>
   </tr>
   {% endfor %}
 </table>
