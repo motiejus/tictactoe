@@ -143,5 +143,5 @@ CELERY_ACCEPT_CONTENT = ['msgpack', 'yaml']
 BROKER_URL = 'redis://'
 
 FIGHT_CGROUP = config.get('limits', 'cgroup')
-FIGHT_MEMORY_LIMIT = config.get('limits', 'memory')
-FIGHT_TIMEOUT = config.get('limits', 'timeout')
+FIGHT_MEMORY_LIMIT = config.getint('limits', 'memory')
+FIGHT_TIMEOUT = config.getfloat('limits', 'timeout')
