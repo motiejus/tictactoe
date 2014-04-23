@@ -1,7 +1,7 @@
 django==1.7b1
 msgpack-python==0.4.1
 celery==3.1.9
-tictactoelib==0.1.0
+tictactoelib==0.2.1
 redis==2.9.1
 django-jquery==1.9.1
 django-bootstrap-static==3.1.1

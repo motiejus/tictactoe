@@ -1,6 +1,7 @@
 import logging
 
 from django.core.serializers import serialize, deserialize
+from django.conf import settings
 
 from tictactoelib import compete
 
@@ -18,10 +19,15 @@ def fight(e1, e2):
     e1log = e1.id, e1.user
     e2log = e2.id, e2.user
 
-    round1 = compete(e1.code, e2.code)
+    kwargs = dict(
+        cgroup=settings.FIGHT_CGROUP,
+        memlimit=settings.FIGHT_MEMORY_LIMIT,
+        timeout=settings.FIGHT_TIMEOUT,
+    )
+    round1 = compete(e1.code, e2.code, **kwargs)
     logger.debug(logmsg % (e1log + e2log + tuple(round1[:2])))
 
-    round2 = compete(e2.code, e1.code)
+    round2 = compete(e2.code, e1.code, **kwargs)
     logger.debug(logmsg % (e2log + e1log + tuple(round2[:2])))
 
     Fight.from_compete(e1, e2, round1).save()

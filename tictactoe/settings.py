@@ -141,3 +141,7 @@ MAX_CODE_SIZE = 60000
 CELERY_TASK_SERIALIZER = 'msgpack'
 CELERY_ACCEPT_CONTENT = ['msgpack', 'yaml']
 BROKER_URL = 'redis://'
+
+FIGHT_CGROUP = config.get('limits', 'cgroup')
+FIGHT_MEMORY_LIMIT = config.get('limits', 'memory')
+FIGHT_TIMEOUT = config.get('limits', 'timeout')
