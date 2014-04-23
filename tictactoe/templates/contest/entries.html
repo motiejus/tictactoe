@@ -1,6 +1,10 @@
 {% extends "main.html" %}
 {% load i18n %}
 
+{% block user_entries_selected %}{% if user %}selected{% endif %}{% endblock %}
+{% block all_entries_selected %}{% if not user %}selected{% endif %}{% endblock %}
+
+
 {% block title %}{% trans "Entry list" %}{% endblock %}
 
 {% block content %}
