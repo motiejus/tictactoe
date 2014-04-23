@@ -1,5 +1,6 @@
 {% extends "main.html" %}
 {% load i18n %}
+{% load contest_extras %}
 
 {% block title %}{% trans "Entry " %} {{ entry.id }}{% endblock %}
 
@@ -17,35 +18,28 @@
   <thead>
     <tr>
       <th>id</th>
-      <th>Opponent x</th>
-      <th>Opponent o</th>
+      <th>Opponent</th>
+      <th>Your role (x/o)</th>
       <th>{% trans "Result" %}</th>
     </tr>
   </thead>
   {% for fight in fights %}
 
-  {% if fight.x.user == entry.user %}   <tr class="{{ fight.result_of_x }}">
-      {% else %}
-        <tr class="{{ fight.result_of_o }}">
-      {% endif %}
+  <tr class="{{ fight|result_of:entry.user }}">
 
     <td>{{ fight.id }}</td>
     <td>
-      {% if fight.x.user != entry.user %}
+      {% if fight.x.user == entry.user %}
+        <a href="{{ fight.o.get_absolute_url }}">{{ fight.o }}</a>
+      {% else %}
         <a href="{{ fight.x.get_absolute_url }}">{{ fight.x }}</a>
       {% endif %}
     </td>
     <td>
-      {% if fight.o.user != entry.user %}
-        <a href="{{ fight.o.get_absolute_url }}">{{ fight.o }}</a>
-      {% endif %}
+      {% if fight.x.user == entry.user %}x{% else %}o{% endif %}
     </td>
     <td>
-      {% if fight.x.user == entry.user %}
-        <a href="{{ fight.get_absolute_url }}">{{ fight.result_of_x }}</a>
-      {% else %}
-        <a href="{{ fight.get_absolute_url }}">{{ fight.result_of_o }}</a>
-      {% endif %}
+      <a href="{{ fight.get_absolute_url }}">{{ fight|result_of:entry.user }}</a>
     </td>
   </tr>
   {% endfor %}

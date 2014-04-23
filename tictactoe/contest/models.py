@@ -37,7 +37,8 @@ class Entry(models.Model):
         return reverse_lazy('tictactoe.contest.views.entry', args=[self.id])
 
     def __str__(self):
-        return "<Entry by %s (%s)>" % (self.user, fmt(self.codesize))
+        return "<Entry %d by %s (%s)>" % (
+            self.id, self.user, fmt(self.codesize))
 
     def add_latest(self):
         """After qualifying, make it LatestEntry of this user"""

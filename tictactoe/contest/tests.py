@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 
 from tictactoe.contest import logic
+from tictactoe.contest.templatetags import contest_extras
 from tictactoe.tools.testing import sync_celery
 
 from .models import Entry, Fight, LatestEntry
@@ -119,6 +120,9 @@ class CeleryFightTestCase(TestCase):
 
 def load_tests(loader, tests, ignore):
     tests.addTests(doctest.DocTestSuite(logic))
+    setUp = lambda self: new_user(self) or new_entry(self)
+    tests.addTests(doctest.DocTestSuite(
+        contest_extras, setUp=setUp))
     return tests
 
 
@@ -129,9 +133,13 @@ def new_user(self):
     self.user2 = User.objects.create(username='u2')
     self.user2.set_password('u2')
     self.user2.save()
+    if hasattr(self, 'globs'):
+        self.globs.update({'user1': self.user1, 'user2': self.user2})
 
 
 def new_entry(self):
     code1 = 'lua code'
     self.e1 = Entry.objects.create(user=self.user1, code=code1)
     self.e2 = Entry.objects.create(user=self.user2, code=code1)
+    if hasattr(self, 'globs'):
+        self.globs.update({'e1': self.e1, 'e2': self.e2})
