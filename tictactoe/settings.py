@@ -72,6 +72,7 @@ DATABASES = {
         'NAME': _DBNAME,
         'USER': config.get('db', 'user'),
         'PASSWORD': config.get('db', 'password'),
+        'HOST': config.get('db', 'host'),
     }
 }
 
