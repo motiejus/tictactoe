@@ -1,3 +1,4 @@
 global-include *.html *.js *.css *.png *.jpg *.gif *.jpeg *.tpl *.json *.rpm *.yaml *.cfg
+exclude tictactoe/tictactoe.cfg
 include requirements.txt
 include README.rst
