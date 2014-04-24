@@ -11,7 +11,7 @@ TEMPLATE_DEBUG = DEBUG
 
 SECRET_KEY = config.get('tictactoe', 'secret_key', fallback='supersecret')
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['hostile.tictactoe.spilgames.com', 'tictactoe.spilgames.com']
 
 DEV_APPS = (
     'django_extensions',
