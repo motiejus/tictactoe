@@ -1,7 +1,8 @@
 Notes for installation on Red-Hat based systems.
 
     # useradd pyuser
-    # yum install python3-devel python-virtualenv make gcc-c++
+    # yum install python3-devel python-virtualenv make gcc-c++ \
+        postgresql-server postgresql-devel
     # cp deploy/cgconfig.conf /etc/
     # cp deploy/tictactoe.ngx /etc/nginx/sites-enabled/
     # systemctl restart cgconfig.service
