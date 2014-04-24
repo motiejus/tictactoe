@@ -1,0 +1,41 @@
+{% extends "main.html" %}
+{% load i18n %}
+
+{% block caps_left_selected %}selected{% endblock %}
+
+{% block title %}{% trans "Handed out caps" %}{% endblock %}
+
+{% block content %}
+<h2>{% trans "Handed out caps" %}</h2>
+
+People that passed the qualification and received caps:
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>When</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  {% for cap in caps %}
+  <tr>
+    <td>
+       <a href="{% url "tictactoe.contest.views.entries" uid=cap.user.id %}">
+         {{ cap.user }}
+       </a>
+     </td>
+
+    <td>
+      {{ cap.when|date:"Y-m-d H:i:s" }}
+    </td>
+
+    <td>
+      {{ cap.notes }}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+Caps left: <b>{{ caps_left }}</b>
+{% endblock %}

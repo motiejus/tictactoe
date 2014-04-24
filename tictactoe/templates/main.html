@@ -58,6 +58,11 @@
        <li>
          <a class="{% block rules_selected %}{% endblock %}" href="{% url "rules" %}">{% trans "Rules" %}</a>
        </li>
+
+       <li>
+         <a class="{% block caps_left_selected %}{% endblock %}" href="{% url "tictactoe.contest.views.caps_left" %}">{% trans "Caps Left" %}</a>
+       </li>
+
      </ul>
   </div>
 

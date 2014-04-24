@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.core.serializers import serialize
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from django.template.defaultfilters import filesizeformat as fmt
+from django.template.defaultfilters import date, filesizeformat as fmt
 from django.conf import settings
 
 from tictactoe.tools.validators import ByteLengthValidator
@@ -15,6 +15,18 @@ from . import fixtures
 
 
 logger = logging.getLogger(__name__)
+
+
+class HandedOutCaps(models.Model):
+    user = models.ForeignKey(User)
+    when = models.DateTimeField(auto_now_add=True)
+    notes = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "To %s at %s" % (self.user, date(self.when, "Y-m-d H:i:s"))
+
+    class Meta:
+        ordering = '-when',
 
 
 class Entry(models.Model):

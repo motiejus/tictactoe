@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Entry, LatestEntry, Fight
+from .models import Entry, LatestEntry, Fight, HandedOutCaps
 
 
 class LatestEntryAdmin(admin.ModelAdmin):
@@ -25,3 +25,4 @@ class FightAdmin(admin.ModelAdmin):
 admin.site.register(Entry, EntryAdmin)
 admin.site.register(LatestEntry, LatestEntryAdmin)
 admin.site.register(Fight, FightAdmin)
+admin.site.register(HandedOutCaps)
