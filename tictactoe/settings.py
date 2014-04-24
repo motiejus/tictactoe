@@ -94,7 +94,8 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (os.path.join(APP_DIR, 'static'),)
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = config.get('tictactoe', 'static_root') or \
+    os.path.join(BASE_DIR, 'static')
 
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = '/'
