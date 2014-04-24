@@ -3,7 +3,6 @@ env:
     - LUA=lua5.1
     - LUA=lua5.2
 python:
-  - "3.2"
   - "3.3"
 script: make test
 install: sudo apt-get install $LUA
