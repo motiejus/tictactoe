@@ -9,3 +9,4 @@ tictactoe.db
 /static/
 /dist/
 /.coverage.xml
+/build/
