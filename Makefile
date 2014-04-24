@@ -32,7 +32,7 @@ cover: env/.env_done
 	echo "  See .htmlcov/index.html for coverage report"
 
 style: env/.env_done
-	$(BIN)/flake8 --exclude=migrations tictactoe deploy setup.py
+	$(BIN)/flake8 --exclude=migrations tictactoe setup.py
 
 clean:
 	rm -fr env
