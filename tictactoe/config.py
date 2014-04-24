@@ -9,8 +9,8 @@ HERE = os.path.dirname(__file__)
 
 configfiles = [
     os.path.join(HERE, 'tictactoe.default.cfg'),  # default config
-    os.path.join(HERE, 'tictactoe.cfg'),          # per-environment config
     '/etc/tictactoe.cfg',                         # staging/live
+    os.path.join(HERE, 'tictactoe.cfg'),          # per-environment config
 ]
 
 files_read = config.read(configfiles)
