@@ -13,6 +13,9 @@ SECRET_KEY = config.get('tictactoe', 'secret_key', fallback='supersecret')
 
 ALLOWED_HOSTS = ['tictactoe.spilgames.com']
 
+ADMINS = (('Motiejus', 'motiejus.jakstys@spilgames.com'),)
+MANAGERS = ADMINS
+
 DEV_APPS = (
     'django_extensions',
     'debug_toolbar'
