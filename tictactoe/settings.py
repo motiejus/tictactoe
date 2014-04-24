@@ -119,15 +119,20 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
+        'syslog': {
+            'level': 'DEBUG',
+            'class': 'logbook.compat.RedirectLoggingHandler',
+            'formatter': 'simple',
+        },
     },
     'loggers': {
         'tictactoe': {
-            'handlers': ['console'],
+            'handlers': ['console', 'syslog'],
             'propagate': True,
             'level': 'INFO',
             },
         'django': {
-            'handlers': ['console'],
+            'handlers': ['console', 'syslog'],
             'propagate': True,
             'level': 'INFO',
             }
@@ -147,3 +152,14 @@ FIGHT_CGROUP = config.get('limits', 'cgroup')
 _FIGHT_MEMORY_LIMIT = config.get('limits', 'memory')
 FIGHT_MEMORY_LIMIT = _FIGHT_MEMORY_LIMIT and int(_FIGHT_MEMORY_LIMIT) or None
 FIGHT_TIMEOUT = config.getfloat('limits', 'timeout')
+
+
+import logbook
+import logbook.handlers
+
+# add syslog handler
+syslog_handler = logbook.handlers.SyslogHandler(
+    application_name='tictactoe', facility='local6',
+    address=('localhost', 514)
+    )
+syslog_handler.push_application()

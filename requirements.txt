@@ -5,3 +5,4 @@ tictactoelib==0.2.1
 redis==2.9.1
 django-jquery==1.9.1
 django-bootstrap-static==3.1.1
+Logbook==0.6.0
