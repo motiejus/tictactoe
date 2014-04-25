@@ -11,7 +11,7 @@ if sys.version_info < (3, 3):
 
 setup(
     name='tictactoe',
-    version='0.1.0',
+    version='0.1.1',
     author="Motiejus Jakštys",
     author_email="desired.mta@gmail.com",
     description="Ultimate Tic-Tac-Toe tictactoe front-end",
