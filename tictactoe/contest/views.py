@@ -5,17 +5,15 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.conf import settings
 
 from .forms import CodeUploadForm
 from .models import Entry, LatestEntry, Fight, HandedOutCaps
 
 
-def caps_left(request):
+def who_got_capped(request):
     caps = HandedOutCaps.objects.all()
-    caps_left = settings.TOTAL_CAPS - len(caps)
     return render_to_response(
-        'contest/caps_left.html', {'caps': caps, 'caps_left': caps_left},
+        'contest/who_got_capped.html', {'caps': caps},
         context_instance=RequestContext(request))
 
 

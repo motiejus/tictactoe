@@ -1,14 +1,15 @@
 {% extends "main.html" %}
 {% load i18n %}
 
-{% block caps_left_selected %}selected{% endblock %}
+{% block who_got_capped_selected %}selected{% endblock %}
 
-{% block title %}{% trans "Handed out caps" %}{% endblock %}
+{% block title %}{% trans "Who got capped?" %}{% endblock %}
 
 {% block content %}
-<h2>{% trans "Handed out caps" %}</h2>
+<h2>{% trans "Who got capped?" %}</h2>
 
-People that passed the qualification and received caps:
+These people have successfully qualified for the Gamesmaster Challenge - catch
+them in their caps:
 
 <table class="table">
   <thead>
@@ -37,5 +38,4 @@ People that passed the qualification and received caps:
   {% endfor %}
 </table>
 
-Caps left: <b>{{ caps_left }}</b>
 {% endblock %}

@@ -103,8 +103,6 @@ STATIC_ROOT = config.get('tictactoe', 'static_root') or \
 LOGIN_URL = reverse_lazy('login')
 LOGIN_REDIRECT_URL = '/'
 
-TOTAL_CAPS = config.getint('tictactoe', 'total_caps')
-
 LOGGING = {
     'version': 1,
     'formatters': {

@@ -10,7 +10,7 @@ urlpatterns = patterns(
     url(r'rules$', TemplateView.as_view(template_name='contest/rules.html'),
         name='rules'),
 
-    url(r'^caps_left$', 'tictactoe.contest.views.caps_left'),
+    url(r'^who_got_capped$', 'tictactoe.contest.views.who_got_capped'),
     url(r'^upload$', 'tictactoe.contest.views.upload'),
     url(r'^ranking$', 'tictactoe.contest.views.ranking'),
     url(r'^entries$', 'tictactoe.contest.views.entries'),
