@@ -25,7 +25,7 @@ class HandedOutCaps(models.Model):
         return "To %s at %s" % (self.user, date(self.when, "Y-m-d H:i:s"))
 
     class Meta:
-        ordering = '-when',
+        ordering = 'when',
 
 
 class Entry(models.Model):

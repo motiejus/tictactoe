@@ -22,7 +22,7 @@ them in their caps:
   <tr>
     <td>
        <a href="{% url "tictactoe.contest.views.entries" uid=cap.user.id %}">
-         {{ cap.user }}
+         {{ cap.user.get_full_name }} ({{ cap.user.username }})
        </a>
      </td>
 
