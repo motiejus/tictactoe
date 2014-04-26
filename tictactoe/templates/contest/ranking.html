@@ -21,12 +21,9 @@
   {% for latestentry in latestentries %}
   <tr>
     <td>
-      {% if latestentry.user.first_name %}
-        {{ latestentry.user.first_name }}
-        {{ latestentry.user.last_name }}
-      {% else %}
-        {{ latestentry.user.username }}
-      {% endif %}
+      <a href="{% url "tictactoe.contest.views.entries" uid=entry.user.id %}">
+      {{ latestentry.user.get_full_name }} ({{ entry.user.username }})
+      </a>
     </td>
     <td>{{ latestentry.entry.codesize|filesizeformat }}</td>
     <td>
