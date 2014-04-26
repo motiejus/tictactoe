@@ -28,7 +28,7 @@
     <td>{{ entry.id }}</a>
       <td>
          <a href="{% url "tictactoe.contest.views.entries" uid=entry.user.id %}">
-           {% firstof entry.user.get_full_name entry.user.username %}
+           {{ entry.user.get_full_name }} ({{ entry.user.username }})
          </a>
        </td>
     <td>{{ entry.codesize|filesizeformat }}</td>
