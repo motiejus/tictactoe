@@ -49,7 +49,7 @@ def ranking(request):
     latest = LatestEntry.objects.all()
     res = [e.calc_results() for e in latest]
     [setattr(l, 'results', r) for l, r in zip(latest, res)]
-    latest2 = sorted(latest, key=lambda x: x.results[0])
+    latest2 = sorted(latest, key=lambda x: x.results[0], reverse=True)
 
     return render_to_response(
         'contest/ranking.html', {'latestentries': latest2},
