@@ -20,7 +20,6 @@ logger = logging.getLogger(__name__)
 class HandedOutCaps(models.Model):
     user = models.ForeignKey(User)
     when = models.DateTimeField(auto_now_add=True)
-    notes = models.CharField(max_length=255)
 
     def __str__(self):
         return "To %s at %s" % (self.user, date(self.when, "Y-m-d H:i:s"))

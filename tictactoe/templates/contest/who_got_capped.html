@@ -16,7 +16,6 @@ them in their caps:
     <tr>
       <th>User</th>
       <th>When</th>
-      <th>Notes</th>
     </tr>
   </thead>
   {% for cap in caps %}
@@ -31,9 +30,6 @@ them in their caps:
       {{ cap.when|date:"Y-m-d H:i:s" }}
     </td>
 
-    <td>
-      {{ cap.notes }}
-    </td>
   </tr>
   {% endfor %}
 </table>
