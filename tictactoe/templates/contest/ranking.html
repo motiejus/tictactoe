@@ -21,8 +21,8 @@
   {% for latestentry in latestentries %}
   <tr>
     <td>
-      <a href="{% url "tictactoe.contest.views.entries" uid=entry.user.id %}">
-      {{ latestentry.user.get_full_name }} ({{ entry.user.username }})
+      <a href="{% url "tictactoe.contest.views.entries" uid=latestentry.user.id %}">
+      {{ latestentry.user.get_full_name }} ({{ latestentry.user.username }})
       </a>
     </td>
     <td>{{ latestentry.entry.codesize|filesizeformat }}</td>
