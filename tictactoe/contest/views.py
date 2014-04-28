@@ -20,6 +20,13 @@ def who_got_capped(request):
 def entry(request, id):
     entry = get_object_or_404(Entry, pk=id)
     fights = Fight.objects.filter(Q(x=entry) | Q(o=entry)).order_by('id').all()
+    for fight in fights:
+        if fight.x.user == entry.user:
+            fight.opponent_fight = fight.o
+        else:
+            fight.opponent_fight = fight.x
+        if fight.opponent_fight.latestentry_set.exists():
+            fight.latest = True
     return render_to_response(
         'contest/entry.html', {'entry': entry, 'fights': fights},
         context_instance=RequestContext(request))

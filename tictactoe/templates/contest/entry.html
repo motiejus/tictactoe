@@ -25,15 +25,15 @@
   </thead>
   {% for fight in fights %}
 
-  <tr class="{{ fight|result_of:entry.user }}">
+    {% if fight.latest %}
+      <tr class="{{ fight|result_of:entry.user }}">
+    {% else %}
+      <tr>
+    {% endif %}
 
     <td>{{ fight.id }}</td>
     <td>
-      {% if fight.x.user == entry.user %}
-        <a href="{{ fight.o.get_absolute_url }}">{{ fight.o }}</a>
-      {% else %}
-        <a href="{{ fight.x.get_absolute_url }}">{{ fight.x }}</a>
-      {% endif %}
+      <a href="{{ fight.opponent_fight.get_absolute_url }}">{{ fight.o }}</a>
     </td>
     <td>
       {% if fight.x.user == entry.user %}x{% else %}o{% endif %}
