@@ -1,4 +1,4 @@
-django==1.7b1
+django==1.11.28
 msgpack-python==0.4.1
 celery==3.1.9
 tictactoelib==0.2.4
